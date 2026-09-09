@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | GHOST_FX</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .settings-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px 80px;
+        }
+
+        .settings-header {
+            margin-bottom: 30px;
+        }
+
+        .settings-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .settings-header p {
+            color: #aaa;
+        }
+
+        .settings-card {
+            background: rgba(20, 10, 35, 0.9);
+            border: 1px solid rgba(160, 90, 255, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .settings-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h3 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
+
+        .setting-info p {
+            margin: 0;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .setting-input {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #3b2455;
+            background: #100a19;
+            color: white;
+            outline: none;
+        }
+
+        .setting-input:focus {
+            border-color: #9b5cff;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #333;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .slider::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle input:checked + .slider {
+            background: #8b45ff;
+        }
+
+        .toggle input:checked + .slider::before {
+            transform: translateX(24px);
+        }
+
+        .save-btn {
+            margin-top: 20px;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #7b2cff, #b05cff);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            padding: 11px 20px;
+            border: 1px solid #8b45ff;
+            border-radius: 8px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: rgba(139, 69, 255, 0.15);
+        }
+
+        .demo-status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(80, 200, 120, 0.08);
+            color: #7dffad;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .setting-row {
+                align-items: flex-start;
+            }
+
+            .setting-info {
+                max-width: 75%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            GHOST_<span>FX</span>
+        </div>
+
+        <a href="dashboard.html" class="nav-btn">
+            Dashboard
+        </a>
+
+    </nav>
+
+
+    <!-- SETTINGS -->
+    <main class="settings-page">
+
+        <div class="settings-header">
+
+            <h1>Settings ⚙️</h1>
+
+            <p>
+                Manage your GHOST_FX dashboard preferences.
+            </p>
+
+        </div>
+
+
+        <!-- PROFILE -->
+        <section class="settings-card">
+
+            <h2>Profile</h2>
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Display Name</h3>
+                    <p>Name displayed on your dashboard.</p>
+                </div>
+
+                <input
+                    class="setting-input"
+                    type="text"
+                    id="displayName"
+                    value="GHOST User"
+                >
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Email</h3>
+                    <p>Demo account email.</p>
+                </div>
+
+                <input
+                    class="setting-input"
+                    type="email"
+                    value="demo@ghostfx.com"
+                    disabled
+                >
+
+            </div>
+
+        </section>
+
+
+        <!-- DASHBOARD -->
+        <section class="settings-card">
+
+            <h2>Dashboard</h2>
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Market Updates</h3>
+                    <p>Show market update information on your dashboard.</p>
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="marketUpdates"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>AI Analysis</h3>
+                    <p>Show educational AI market-analysis panels.</p>
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="aiAnalysis"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- NOTIFICATIONS -->
+        <section class="settings-card">
+
+            <h2>Notifications</h2>
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Market Notifications</h3>
+                    <p>Receive demo notifications about market activity.</p>
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="marketNotifications"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>AI Updates</h3>
+                    <p>Receive demo updates when new analysis is available.</p>
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="aiNotifications"
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- INTERFACE -->
+        <section class="settings-card">
+
+            <h2>Interface</h2>
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Theme</h3>
+                    <p>Current GHOST_FX interface theme.</p>
+                </div>
+
+                <select class="setting-input" id="theme">
+
+                    <option value="dark">
+                        Dark
+                    </option>
+
+                    <option value="system">
+                        System
+                    </option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+
+        <!-- SECURITY -->
+        <section class="settings-card">
+
+            <h2>Security</h2>
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Authentication</h3>
+                    <p>
+                        Secure authentication will be connected
+                        when the backend is added.
+                    </p>
+                </div>
+
+                <span style="color:#7dffad;">
+                    Demo
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <button class="save-btn" id="saveSettings">
+            Save Settings
+        </button>
+
+        <div class="demo-status" id="demoStatus">
+            Settings saved in demo mode.
+        </div>
+
+
+        <!-- LOGOUT -->
+        <section class="settings-card" style="margin-top:30px;">
+
+            <h2>Account</h2>
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Log Out</h3>
+                    <p>Return to the GHOST_FX login page.</p>
+                </div>
+
+                <button class="logout-btn" id="logoutBtn">
+                    Log Out
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            © 2026 GHOST_FX. Educational purposes only.
+        </p>
+
+        <p>
+            GHOST_FX does not provide financial advice
+            or guarantee trading results.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+    <script>
+
+        const saveButton =
+            document.getElementById("saveSettings");
+
+        const demoStatus =
+            document.getElementById("demoStatus");
+
+        saveButton.addEventListener("click", function () {
+
+            demoStatus.style.display = "block";
+
+            setTimeout(function () {
+                demoStatus.style.display = "none";
+            }, 3000);
+
+        });
+
+
+        document.getElementById("logoutBtn")
+            .addEventListener("click", function () {
+
+                window.location.href = "login.html";
+
+            });
+
+
+        document.getElementById("theme")
+            .addEventListener("change", function () {
+
+                if (this.value === "dark") {
+                    document.body.style.background = "";
+                }
+
+                if (this.value === "system") {
+                    document.body.style.background = "";
+                }
+
+            });
+
+    </script>
+
+</body>
+</html>
