@@ -1,130 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>GHOST_FX | Dashboard</title>
+    <title>Dashboard | GHOST_FX</title>
 
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-  <style>
-    .dashboard-page {
-      min-height: 100vh;
-      padding: 35px 6%;
-    }
+    <style>
+        .dashboard-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 45px 20px 80px;
+        }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
 
-    .welcome h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
-    }
+        .dashboard-header h1 {
+            margin-bottom: 8px;
+        }
 
-    .welcome p {
-      color: #858da1;
-      font-size: 14px;
-    }
+        .dashboard-header p {
+            color: #aaa;
+        }
 
-    .status {
-      padding: 9px 14px;
-      border: 1px solid #263044;
-      border-radius: 20px;
-      color: #55d68b;
-      font-size: 12px;
-    }
+        .dashboard-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-bottom: 20px;
-    }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+        }
 
-    .stat-card {
-      background: #0b0e16;
-      border: 1px solid #1d2331;
-      border-radius: 14px;
-      padding: 20px;
-    }
+        .stat-card {
+            background: rgba(20, 10, 35, 0.9);
+            border: 1px solid rgba(160, 90, 255, 0.25);
+            border-radius: 15px;
+            padding: 22px;
+        }
 
-    .stat-card small {
-      color: #777f93;
-    }
+        .stat-card p {
+            color: #999;
+            margin: 0 0 10px;
+            font-size: 14px;
+        }
 
-    .stat-card h2 {
-      margin-top: 10px;
-      font-size: 25px;
-    }
+        .stat-card h2 {
+            margin: 0;
+            font-size: 28px;
+        }
 
-    .dashboard-layout {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-    }
+        .section-title {
+            margin: 35px 0 18px;
+        }
 
-    .dashboard-panel {
-      background: #0b0e16;
-      border: 1px solid #1d2331;
-      border-radius: 14px;
-      padding: 24px;
-    }
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
 
-    .panel-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+        .market-card {
+            background: rgba(20, 10, 35, 0.9);
+            border: 1px solid rgba(160, 90, 255, 0.25);
+            border-radius: 15px;
+            padding: 24px;
+            transition: 0.3s;
+        }
 
-    .panel-heading h3 {
-      font-size: 17px;
-    }
+        .market-card:hover {
+            transform: translateY(-4px);
+            border-color: #9b5cff;
+        }
 
-    .panel-heading span {
-      color: #777f93;
-      font-size: 12px;
-    }
+        .market-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
 
-    .signal {
-      padding: 18px;
-      border: 1px solid #292348;
-      background: #0e1020;
-      border-radius: 12px;
-      margin-bottom: 15px;
-    }
+        .market-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-    .signal-top {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
+        .demo-badge {
+            font-size: 11px;
+            padding: 5px 8px;
+            border-radius: 6px;
+            background: rgba(155, 92, 255, 0.15);
+            color: #c9a7ff;
+        }
 
-    .signal-pair {
-      font-weight: bold;
-    }
+        .price {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
 
-    .signal-type {
-      color: #55d68b;
-      font-size: 12px;
-    }
+        .market-change {
+            color: #7dffad;
+            font-size: 14px;
+        }
 
-    .signal p {
-      color: #929aad;
-      font-size: 13px;
-      line-height: 1.6;
-    }
+        .chart {
+            height: 90px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
 
-    .watchlist {
-      list-style: none;
-    }
+        .chart svg {
+            width: 100%;
+            height: 100%;
+        }
 
-    .watchlist li {
-      display:
+        .analysis-box {
+            margin-top: 15px;
+            padding: 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .analysis-box strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .analysis-box p {
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .watchlist {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .watch-card {
+            padding: 18px;
+            border-radius: 12px;
+            background: rgba(20, 10, 35, 0.8);
+            border: 1px solid rgba(160, 90, 255, 0.2);
+        }
+
+        .watch-card h3 {
+            margin: 0 0 8px;
+        }
+
+        .watch-card p {
+            margin: 0;
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        .ai-status {
+            margin-top: 35px;
+            padding: 24px;
+            border-radius: 15px;
+            border: 1px solid rgba(160, 90, 255, 0.3);
+            background: rgba(100, 40, 180, 0.08);
+        }
+
+        .ai-status h2 {
+            margin-top: 0;
+        }
+
+        .status-online {
+            color: #7dffad;
+            font-weight: bold;
+        }
+
+        .disclaimer {
+            color: #777;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .market-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .watchlist {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .watchlist {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-nav {
+                width: 100%;
+            }
+
+            .dashboard-nav a {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+
+        <div class="logo">
+            GHOST_<span>FX</span>
+        </div>
+
+        <div class="dashboard-nav">
+
+            <a href="index.html" class="nav-btn">
+                Home
+            </a>
+
+            <a href="settings.html" class="nav-btn">
+                ⚙️ Settings
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- DASHBOARD -->
+    <main class="dashboard-page">
+
+        <div class="dashboard-header">
+
+            <h1>Trading Dashboard</h1>
+
+            <p>
+                Welcome to your GHOST_FX market-analysis dashboard.
+            </p>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <p>Markets Watched</p>
+                <h2>12</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>AI Analyses</p>
+                <h2>24</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Watchlist</p>
+                <h2>8</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Platform Status</p>
+                <h2 class="status-online">Online</h2>
+            </div>
+
+        </section>
+
+
+        <!-- MARKET ANALYSIS -->
+        <h2 class="section-title">
+            Market Analysis
+        </h2>
+
+        <section class="market-grid">
+
+
+            <!-- EUR/USD -->
+            <div class="market-card">
+
+                <div class="market-top">
+
+                    <div class="market-name">
+                        EUR/USD
+                    </div>
+
+                    <div class="demo-badge">
+                        DEMO DATA
+                    </div>
+
+                </div>
+
+                <div class="price">
+                    1.0842
+                </div>
+
+                <div class="market-change">
+                    +0.42%
+                </div>
+
+                <div class="chart">
+
+                    <svg viewBox="0 0 400 100"
+                         preserveAspectRatio="none">
+
+                        <polyline
+                            points="0,75 45,68 85,74 125,50 165,58 205,40 245,48 285,30 325,38 365,20 400,28"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="analysis-box">
+
+                    <strong>AI Educational Analysis</strong>
+
+                    <p>
+                        Demo analysis indicates mixed market momentum.
+                        This information is for educational purposes only
+                        and is not a trading recommendation.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- XAU/USD -->
+            <div class="market-card">
+
+                <div class="market-top">
+
+                    <div class="market-name">
+                        XAU/USD
+                    </div>
+
+                    <div class="demo-badge">
+                        DEMO DATA
+                    </div>
+
+                </div>
+
+                <div class="price">
+                    2,365.40
+                </div>
+
+                <div class="market-change">
+                    +0.68%
+                </div>
+
+                <div class="chart">
+
+                    <svg viewBox="0 0 400 100"
+                         preserveAspectRatio="none">
+
+                        <polyline
+                            points="0,80 45,72 90,76 130,60 170,65 210,45 250,52 290,35 330,42 365,25 400,32"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="analysis-box">
+
+                    <strong>AI Educational Analysis</strong>
+
+                    <p>
+                        Demo data shows a positive short-term movement.
+                        Users should independently research markets and
+                        understand that market conditions can change.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- GBP/USD -->
+            <div class="market-card">
+
+                <div class="market-top">
+
+                    <div class="market-name">
+                        GBP/USD
+                    </div>
+
+                    <div class="demo-badge">
+                        DEMO DATA
+                    </div>
+
+                </div>
+
+                <div class="price">
+                    1.2718
+                </div>
+
+                <div class="market-change">
+                    -0.18%
+                </div>
+
+                <div class="chart">
+
+                    <svg viewBox="0 0 400 100"
+                         preserveAspectRatio="none">
+
+                        <polyline
+                            points="0,25 45,35 90,30 130,45 170,40 210,55 250,48 290,65 330,58 365,75 400,68"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="analysis-box">
+
+                    <strong>AI Educational Analysis</strong>
+
+                    <p>
+                        Demo analysis shows a period of downward movement.
+                        The displayed information is simulated and should
+                        not be treated as financial advice.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- WATCHLIST -->
+        <h2 class="section-title">
+            Your Watchlist
+        </h2>
+
+        <section class="watchlist">
+
+            <div class="watch-card">
+                <h3>EUR/USD</h3>
+                <p>Demo market • Monitoring</p>
+            </div>
+
+            <div class="watch-card">
+                <h3>GBP/USD</h3>
+                <p>Demo market • Monitoring</p>
+            </div>
+
+            <div class="watch-card">
+                <h3>USD/JPY</h3>
+                <p>Demo market • Monitoring</p>
+            </div>
+
+            <div class="watch-card">
+                <h3>XAU/USD</h3>
+                <p>Demo market • Monitoring</p>
+            </div>
+
+        </section>
+
+
+        <!-- AI STATUS -->
+        <section class="ai-status">
+
+            <h2>
+                🤖 GHOST_FX AI
+            </h2>
+
+            <p>
+                System status:
+                <span class="status-online">
+                    Online
+                </span>
+            </p>
+
+            <p>
+                The AI analysis displayed on this dashboard is currently
+                a demonstration interface. Real data and backend
+                processing can be connected later.
+            </p>
+
+            <p class="disclaimer">
+                GHOST_FX is an educational project. Market information
+                shown here is simulated/demo information and is not
+                financial advice, an instruction to trade, or a guarantee
+                of results.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            © 2026 GHOST_FX. Educational purposes only.
+        </p>
+
+        <p>
+            GHOST_FX does not provide financial advice
+            or guarantee trading results.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
