@@ -25,6 +25,7 @@
             border-radius: 18px;
             padding: 35px;
             box-shadow: 0 0 40px rgba(120, 50, 255, 0.12);
+            box-sizing: border-box;
         }
 
         .auth-card h1 {
@@ -56,4 +57,337 @@
             background: #100a19;
             color: white;
             outline: none;
-            box-sizing: border-box
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #9b5cff;
+            box-shadow: 0 0 10px rgba(155, 92, 255, 0.2);
+        }
+
+        .terms {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            color: #aaa;
+            font-size: 13px;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .terms input {
+            margin-top: 3px;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #7b2cff, #b05cff);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(123, 44, 255, 0.3);
+        }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #aaa;
+        }
+
+        .auth-link a {
+            color: #b477ff;
+            text-decoration: none;
+        }
+
+        .security-note {
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            color: #888;
+            font-size: 12px;
+            text-align: center;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+
+        <div class="logo">
+            GHOST_<span>FX</span>
+        </div>
+
+        <a href="index.html" class="nav-btn">
+            Home
+        </a>
+
+    </nav>
+
+
+    <!-- SIGN UP -->
+    <main class="auth-page">
+
+        <div class="auth-card">
+
+            <h1>Create Account</h1>
+
+            <p class="auth-subtitle">
+                Join GHOST_FX
+            </p>
+
+
+            <form id="signupForm">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Minimum 8 characters"
+                        minlength="8"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        minlength="8"
+                        required
+                    >
+
+                </div>
+
+
+                <label class="terms">
+
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        required
+                    >
+
+                    <span>
+                        I understand that GHOST_FX is an educational
+                        market-analysis platform and that the information
+                        provided is for demonstration and educational
+                        purposes.
+                    </span>
+
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="signup-btn"
+                >
+                    Create Demo Account
+                </button>
+
+            </form>
+
+
+            <div
+                id="signupMessage"
+                class="message"
+            ></div>
+
+
+            <div class="auth-link">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
+
+
+            <div class="security-note">
+
+                🔒 Demo mode — this page does not store or transmit
+                passwords or account information.
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            © 2026 GHOST_FX. Educational purposes only.
+        </p>
+
+        <p>
+            GHOST_FX does not provide financial advice
+            or guarantee trading results.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+
+    <script>
+
+        const signupForm =
+            document.getElementById("signupForm");
+
+        const signupMessage =
+            document.getElementById("signupMessage");
+
+
+        signupForm.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                const password =
+                    document.getElementById("password").value;
+
+                const confirmPassword =
+                    document.getElementById("confirmPassword").value;
+
+
+                if (password.length < 8) {
+
+                    signupMessage.style.display = "block";
+
+                    signupMessage.style.background =
+                        "rgba(255, 80, 80, 0.1)";
+
+                    signupMessage.style.color =
+                        "#ff9999";
+
+                    signupMessage.textContent =
+                        "Password must be at least 8 characters.";
+
+                    return;
+                }
+
+
+                if (password !== confirmPassword) {
+
+                    signupMessage.style.display = "block";
+
+                    signupMessage.style.background =
+                        "rgba(255, 80, 80, 0.1)";
+
+                    signupMessage.style.color =
+                        "#ff9999";
+
+                    signupMessage.textContent =
+                        "Passwords do not match.";
+
+                    return;
+                }
+
+
+                /*
+                 * DEMO MODE ONLY
+                 *
+                 * No password is stored or transmitted.
+                 */
+
+                signupMessage.style.display = "block";
+
+                signupMessage.style.background =
+                    "rgba(80, 200, 120, 0.12)";
+
+                signupMessage.style.color =
+                    "#7dffad";
+
+                signupMessage.textContent =
+                    "Demo account details accepted. Redirecting to login...";
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "login.html";
+
+                }, 1500);
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
