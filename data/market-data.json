@@ -4,7 +4,7 @@
   "markets": {
     "XAU/USD": {
       "name": "Gold / US Dollar",
-      "price": 2350.00,
+      "price": 9999.00
       "changePercent": 0.32
     },
     "EUR/USD": {
