@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -16,7 +17,12 @@
     body {
       margin: 0;
       background:
-        radial-gradient(circle at 50% 0%, #21105c 0%, #090912 45%, #050509 100%);
+        radial-gradient(
+          circle at 50% 0%,
+          #21105c 0%,
+          #090912 45%,
+          #050509 100%
+        );
       color: white;
       font-family: Arial, Helvetica, sans-serif;
     }
@@ -143,11 +149,6 @@
       color: #b9b9c9;
     }
 
-    .demo-text {
-      color: #9999ad;
-      font-size: 12px;
-    }
-
     .layout {
       display: grid;
       grid-template-columns: 1.65fr 1fr;
@@ -229,8 +230,15 @@
       overflow: hidden;
       background-color: rgba(0,0,0,.25);
       background-image:
-        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+        linear-gradient(
+          rgba(255,255,255,.05) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.05) 1px,
+          transparent 1px
+        );
       background-size: 45px 45px;
       border: 1px solid rgba(255,255,255,.08);
     }
@@ -371,6 +379,7 @@
     }
 
     @media (max-width: 900px) {
+
       .market-grid {
         grid-template-columns: repeat(2,1fr);
       }
@@ -378,9 +387,11 @@
       .layout {
         grid-template-columns: 1fr;
       }
+
     }
 
     @media (max-width: 550px) {
+
       .market-grid {
         grid-template-columns: 1fr;
       }
@@ -388,7 +399,9 @@
       .reading-grid {
         grid-template-columns: 1fr;
       }
+
     }
+
   </style>
 </head>
 
@@ -400,9 +413,12 @@
     GHOST<span>_FX</span>
   </div>
 
-  <a href="index.html" class="home-btn">Home</a>
+  <a href="index.html" class="home-btn">
+    Home
+  </a>
 
 </header>
+
 
 <main class="dashboard">
 
@@ -419,11 +435,13 @@
     market-analysis workspace.
   </p>
 
+
   <div class="demo-warning">
     ⚠️ <strong>DEMO MODE:</strong>
     Market values shown here are simulated for educational purposes.
     This dashboard is not connected to live trading or trade execution.
   </div>
+
 
   <div class="selector">
 
@@ -433,44 +451,101 @@
 
     <select id="marketSelect">
 
-      <option value="XAU/USD">XAU/USD — Gold</option>
-      <option value="EUR/USD">EUR/USD</option>
-      <option value="GBP/USD">GBP/USD</option>
-      <option value="USD/JPY">USD/JPY</option>
+      <option value="XAU/USD">
+        XAU/USD — Gold
+      </option>
+
+      <option value="EUR/USD">
+        EUR/USD
+      </option>
+
+      <option value="GBP/USD">
+        GBP/USD
+      </option>
+
+      <option value="USD/JPY">
+        USD/JPY
+      </option>
 
     </select>
 
   </div>
 
+
   <section class="market-grid">
 
     <div class="market-card selected" data-market="XAU/USD">
-      <div class="market-name">XAU/USD</div>
-      <div class="market-price" id="cardXAU">2,350.00</div>
-      <div class="change">Demo price</div>
+
+      <div class="market-name">
+        XAU/USD
+      </div>
+
+      <div class="market-price" id="cardXAU">
+        2350.00
+      </div>
+
+      <div class="change">
+        Demo price
+      </div>
+
     </div>
+
 
     <div class="market-card" data-market="EUR/USD">
-      <div class="market-name">EUR/USD</div>
-      <div class="market-price" id="cardEUR">1.0850</div>
-      <div class="change">Demo price</div>
+
+      <div class="market-name">
+        EUR/USD
+      </div>
+
+      <div class="market-price" id="cardEUR">
+        1.0850
+      </div>
+
+      <div class="change">
+        Demo price
+      </div>
+
     </div>
+
 
     <div class="market-card" data-market="GBP/USD">
-      <div class="market-name">GBP/USD</div>
-      <div class="market-price" id="cardGBP">1.2700</div>
-      <div class="change">Demo price</div>
+
+      <div class="market-name">
+        GBP/USD
+      </div>
+
+      <div class="market-price" id="cardGBP">
+        1.2700
+      </div>
+
+      <div class="change">
+        Demo price
+      </div>
+
     </div>
 
+
     <div class="market-card" data-market="USD/JPY">
-      <div class="market-name">USD/JPY</div>
-      <div class="market-price" id="cardJPY">150.20</div>
-      <div class="change">Demo price</div>
+
+      <div class="market-name">
+        USD/JPY
+      </div>
+
+      <div class="market-price" id="cardJPY">
+        150.20
+      </div>
+
+      <div class="change">
+        Demo price
+      </div>
+
     </div>
 
   </section>
 
+
   <section class="layout">
+
 
     <div class="panel">
 
@@ -479,9 +554,10 @@
       </h2>
 
       <p class="description">
-        GHOST_FX analysis workspace. Values currently use simulated
-        demonstration data.
+        GHOST_FX analysis workspace. Market values are currently
+        loaded from the platform's demonstration data source.
       </p>
+
 
       <div class="price-display">
 
@@ -490,31 +566,47 @@
         </div>
 
         <div class="big-price" id="mainPrice">
-          2,350.00
+          2350.00
         </div>
 
         <div class="price-change" id="mainChange">
-          +0.00% — DEMO
+          +0.32% — DEMO
         </div>
 
         <div class="updated" id="updatedTime">
-          Last updated: just now
+          Loading market data...
         </div>
 
       </div>
 
+
       <div class="timeframes">
 
-        <span class="timeframe">15M</span>
-        <span class="timeframe active">1H</span>
-        <span class="timeframe">4H</span>
-        <span class="timeframe">1D</span>
+        <span class="timeframe">
+          15M
+        </span>
+
+        <span class="timeframe active">
+          1H
+        </span>
+
+        <span class="timeframe">
+          4H
+        </span>
+
+        <span class="timeframe">
+          1D
+        </span>
 
       </div>
 
+
       <div class="chart">
 
-        <svg viewBox="0 0 800 310" preserveAspectRatio="none">
+        <svg
+          viewBox="0 0 800 310"
+          preserveAspectRatio="none"
+        >
 
           <polyline
             points="
@@ -547,6 +639,7 @@
 
       </div>
 
+
       <div class="ai-analysis">
 
         <div class="ai-title">
@@ -554,51 +647,74 @@
         </div>
 
         <p id="analysisText">
-          XAU/USD is selected in demo mode. The analysis engine
-          demonstrates how future market-data inputs could be
-          transformed into an educational market summary.
+          Loading demonstration market analysis...
         </p>
+
 
         <div class="reading-grid">
 
+
           <div class="reading">
+
             <div class="reading-label">
               Trend
             </div>
 
-            <div class="reading-value" id="trendValue">
+            <div
+              class="reading-value"
+              id="trendValue"
+            >
               Neutral — Demo
             </div>
+
           </div>
 
+
           <div class="reading">
+
             <div class="reading-label">
               Momentum
             </div>
 
-            <div class="reading-value" id="momentumValue">
+            <div
+              class="reading-value"
+              id="momentumValue"
+            >
               Moderate — Demo
             </div>
+
           </div>
 
+
           <div class="reading">
+
             <div class="reading-label">
               Volatility
             </div>
 
-            <div class="reading-value" id="volatilityValue">
+            <div
+              class="reading-value"
+              id="volatilityValue"
+            >
               Moderate — Demo
             </div>
+
           </div>
 
+
           <div class="reading">
+
             <div class="reading-label">
               Market State
             </div>
 
-            <div class="reading-value" id="stateValue">
+            <div
+              class="reading-value"
+              id="stateValue"
+            >
               Neutral — Demo
             </div>
+
           </div>
 
         </div>
@@ -606,6 +722,7 @@
       </div>
 
     </div>
+
 
     <aside class="panel">
 
@@ -617,9 +734,11 @@
         Demonstration readings only.
       </p>
 
+
       <div class="indicator">
 
         <div class="indicator-top">
+
           <span class="indicator-label">
             Trend Strength
           </span>
@@ -627,17 +746,26 @@
           <span id="trendPercent">
             65%
           </span>
+
         </div>
 
         <div class="bar">
-          <div class="fill" id="trendBar" style="width:65%;"></div>
+
+          <div
+            class="fill"
+            id="trendBar"
+            style="width:65%;"
+          ></div>
+
         </div>
 
       </div>
 
+
       <div class="indicator">
 
         <div class="indicator-top">
+
           <span class="indicator-label">
             Volatility
           </span>
@@ -645,17 +773,26 @@
           <span id="volatilityPercent">
             45%
           </span>
+
         </div>
 
         <div class="bar">
-          <div class="fill" id="volatilityBar" style="width:45%;"></div>
+
+          <div
+            class="fill"
+            id="volatilityBar"
+            style="width:45%;"
+          ></div>
+
         </div>
 
       </div>
 
+
       <div class="indicator">
 
         <div class="indicator-top">
+
           <span class="indicator-label">
             Momentum
           </span>
@@ -663,13 +800,21 @@
           <span id="momentumPercent">
             58%
           </span>
+
         </div>
 
         <div class="bar">
-          <div class="fill" id="momentumBar" style="width:58%;"></div>
+
+          <div
+            class="fill"
+            id="momentumBar"
+            style="width:58%;"
+          ></div>
+
         </div>
 
       </div>
+
 
       <div class="bias-box">
 
@@ -677,7 +822,10 @@
           MARKET BIAS
         </div>
 
-        <div class="bias">
+        <div
+          class="bias"
+          id="biasValue"
+        >
           NEUTRAL
         </div>
 
@@ -691,6 +839,7 @@
 
   </section>
 
+
   <section class="panel watchlist">
 
     <h2>
@@ -701,9 +850,11 @@
       Markets available for future secure market-data integration.
     </p>
 
+
     <div class="watch-item">
 
       <div>
+
         <div class="symbol">
           XAU/USD
         </div>
@@ -711,6 +862,7 @@
         <div class="market-description">
           Gold / US Dollar
         </div>
+
       </div>
 
       <span class="status">
@@ -719,9 +871,11 @@
 
     </div>
 
+
     <div class="watch-item">
 
       <div>
+
         <div class="symbol">
           EUR/USD
         </div>
@@ -729,6 +883,7 @@
         <div class="market-description">
           Euro / US Dollar
         </div>
+
       </div>
 
       <span class="status">
@@ -737,9 +892,11 @@
 
     </div>
 
+
     <div class="watch-item">
 
       <div>
+
         <div class="symbol">
           GBP/USD
         </div>
@@ -747,6 +904,7 @@
         <div class="market-description">
           British Pound / US Dollar
         </div>
+
       </div>
 
       <span class="status">
@@ -755,9 +913,11 @@
 
     </div>
 
+
     <div class="watch-item">
 
       <div>
+
         <div class="symbol">
           USD/JPY
         </div>
@@ -765,6 +925,7 @@
         <div class="market-description">
           US Dollar / Japanese Yen
         </div>
+
       </div>
 
       <span class="status">
@@ -775,6 +936,7 @@
 
   </section>
 
+
   <div class="footer">
 
     GHOST_FX is an educational demonstration platform.
@@ -784,194 +946,383 @@
 
 </main>
 
+
 <script>
 
-const marketData = {
+let marketData = {};
 
-  "XAU/USD": {
-    price: 2350.00,
-    change: 0.32,
-    trend: 65,
-    volatility: 45,
-    momentum: 58,
-    trendText: "Neutral — Demo",
-    momentumText: "Moderate — Demo",
-    volatilityText: "Moderate — Demo",
-    stateText: "Neutral — Demo"
-  },
 
-  "EUR/USD": {
-    price: 1.0850,
-    change: -0.12,
-    trend: 48,
-    volatility: 38,
-    momentum: 51,
-    trendText: "Sideways — Demo",
-    momentumText: "Moderate — Demo",
-    volatilityText: "Low — Demo",
-    stateText: "Range — Demo"
-  },
+async function loadMarketData() {
 
-  "GBP/USD": {
-    price: 1.2700,
-    change: 0.21,
-    trend: 61,
-    volatility: 52,
-    momentum: 63,
-    trendText: "Moderate — Demo",
-    momentumText: "Moderate — Demo",
-    volatilityText: "Moderate — Demo",
-    stateText: "Active — Demo"
-  },
+  try {
 
-  "USD/JPY": {
-    price: 150.20,
-    change: -0.08,
-    trend: 55,
-    volatility: 47,
-    momentum: 49,
-    trendText: "Mixed — Demo",
-    momentumText: "Moderate — Demo",
-    volatilityText: "Moderate — Demo",
-    stateText: "Neutral — Demo"
+    const response =
+      await fetch("data/market-data.json");
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Could not load market-data.json"
+      );
+
+    }
+
+
+    const fileData =
+      await response.json();
+
+
+    marketData =
+      fileData.markets;
+
+
+    updateAllMarketCards();
+
+    updateMarket("XAU/USD");
+
+
+    document.getElementById(
+      "updatedTime"
+    ).textContent =
+      "Data source loaded • Demo";
+
+
+    console.log(
+      "GHOST_FX market data loaded successfully."
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "GHOST_FX data error:",
+      error
+    );
+
+
+    document.getElementById(
+      "updatedTime"
+    ).textContent =
+      "Demo data fallback";
+
+
   }
 
-};
+}
 
 
-const marketSelect =
-  document.getElementById("marketSelect");
+function updateAllMarketCards() {
 
-const analysisTitle =
-  document.getElementById("analysisTitle");
+  if (!marketData["XAU/USD"]) {
+    return;
+  }
 
-const analysisText =
-  document.getElementById("analysisText");
 
-const mainPrice =
-  document.getElementById("mainPrice");
+  document.getElementById("cardXAU")
+    .textContent =
+    Number(
+      marketData["XAU/USD"].price
+    ).toFixed(2);
 
-const mainChange =
-  document.getElementById("mainChange");
 
-const updatedTime =
-  document.getElementById("updatedTime");
+  document.getElementById("cardEUR")
+    .textContent =
+    Number(
+      marketData["EUR/USD"].price
+    ).toFixed(4);
 
-const trendValue =
-  document.getElementById("trendValue");
 
-const momentumValue =
-  document.getElementById("momentumValue");
+  document.getElementById("cardGBP")
+    .textContent =
+    Number(
+      marketData["GBP/USD"].price
+    ).toFixed(4);
 
-const volatilityValue =
-  document.getElementById("volatilityValue");
 
-const stateValue =
-  document.getElementById("stateValue");
+  document.getElementById("cardJPY")
+    .textContent =
+    Number(
+      marketData["USD/JPY"].price
+    ).toFixed(2);
 
-const cards =
-  document.querySelectorAll(".market-card");
+}
+
+
+function getDemoAnalysis(market) {
+
+  const analysis = {
+
+    "XAU/USD": {
+      trend: "Neutral — Demo",
+      momentum: "Moderate — Demo",
+      volatility: "Moderate — Demo",
+      state: "Neutral — Demo",
+      trendScore: 65,
+      volatilityScore: 45,
+      momentumScore: 58
+    },
+
+    "EUR/USD": {
+      trend: "Sideways — Demo",
+      momentum: "Moderate — Demo",
+      volatility: "Low — Demo",
+      state: "Range — Demo",
+      trendScore: 48,
+      volatilityScore: 38,
+      momentumScore: 51
+    },
+
+    "GBP/USD": {
+      trend: "Moderate — Demo",
+      momentum: "Moderate — Demo",
+      volatility: "Moderate — Demo",
+      state: "Active — Demo",
+      trendScore: 61,
+      volatilityScore: 52,
+      momentumScore: 63
+    },
+
+    "USD/JPY": {
+      trend: "Mixed — Demo",
+      momentum: "Moderate — Demo",
+      volatility: "Moderate — Demo",
+      state: "Neutral — Demo",
+      trendScore: 55,
+      volatilityScore: 47,
+      momentumScore: 49
+    }
+
+  };
+
+
+  return analysis[market];
+
+}
 
 
 function updateMarket(market) {
 
+  if (!marketData[market]) {
+    return;
+  }
+
+
   const data =
     marketData[market];
+
+
+  const analysis =
+    getDemoAnalysis(market);
+
+
+  const analysisTitle =
+    document.getElementById(
+      "analysisTitle"
+    );
+
+
+  const mainPrice =
+    document.getElementById(
+      "mainPrice"
+    );
+
+
+  const mainChange =
+    document.getElementById(
+      "mainChange"
+    );
+
+
+  const analysisText =
+    document.getElementById(
+      "analysisText"
+    );
+
+
+  const trendValue =
+    document.getElementById(
+      "trendValue"
+    );
+
+
+  const momentumValue =
+    document.getElementById(
+      "momentumValue"
+    );
+
+
+  const volatilityValue =
+    document.getElementById(
+      "volatilityValue"
+    );
+
+
+  const stateValue =
+    document.getElementById(
+      "stateValue"
+    );
+
+
+  const biasValue =
+    document.getElementById(
+      "biasValue"
+    );
+
 
   analysisTitle.textContent =
     market === "XAU/USD"
       ? "XAU/USD — Gold Analysis"
       : market + " — Market Analysis";
 
+
+  const decimals =
+    market === "XAU/USD"
+      ? 2
+      : 4;
+
+
   mainPrice.textContent =
-    data.price.toFixed(
-      market === "XAU/USD" ? 2 : 4
-    );
+    Number(data.price).toFixed(decimals);
+
 
   mainChange.textContent =
-    (data.change >= 0 ? "+" : "") +
-    data.change.toFixed(2) +
+    (Number(data.changePercent) >= 0
+      ? "+"
+      : "") +
+    Number(data.changePercent).toFixed(2) +
     "% — DEMO";
+
 
   analysisText.textContent =
     market +
-    " is selected in demonstration mode. The analysis engine is displaying simulated readings for trend, momentum, volatility and market state.";
+    " is currently selected. GHOST_FX is displaying demonstration market data and educational analysis readings. No live trading instruction or trade execution is provided.";
+
 
   trendValue.textContent =
-    data.trendText;
+    analysis.trend;
+
 
   momentumValue.textContent =
-    data.momentumText;
+    analysis.momentum;
+
 
   volatilityValue.textContent =
-    data.volatilityText;
+    analysis.volatility;
+
 
   stateValue.textContent =
-    data.stateText;
+    analysis.state;
 
-  document.getElementById("trendBar").style.width =
-    data.trend + "%";
 
-  document.getElementById("volatilityBar").style.width =
-    data.volatility + "%";
+  document.getElementById(
+    "trendBar"
+  ).style.width =
+    analysis.trendScore + "%";
 
-  document.getElementById("momentumBar").style.width =
-    data.momentum + "%";
 
-  document.getElementById("trendPercent").textContent =
-    data.trend + "%";
+  document.getElementById(
+    "volatilityBar"
+  ).style.width =
+    analysis.volatilityScore + "%";
 
-  document.getElementById("volatilityPercent").textContent =
-    data.volatility + "%";
 
-  document.getElementById("momentumPercent").textContent =
-    data.momentum + "%";
+  document.getElementById(
+    "momentumBar"
+  ).style.width =
+    analysis.momentumScore + "%";
 
-  cards.forEach(card => {
 
-    card.classList.remove("selected");
+  document.getElementById(
+    "trendPercent"
+  ).textContent =
+    analysis.trendScore + "%";
 
-    if (card.dataset.market === market) {
-      card.classList.add("selected");
-    }
 
-  });
+  document.getElementById(
+    "volatilityPercent"
+  ).textContent =
+    analysis.volatilityScore + "%";
 
-  updatedTime.textContent =
-    "Last updated: " +
-    new Date().toLocaleTimeString();
+
+  document.getElementById(
+    "momentumPercent"
+  ).textContent =
+    analysis.momentumScore + "%";
+
+
+  biasValue.textContent =
+    "NEUTRAL";
+
+
+  document.getElementById(
+    "updatedTime"
+  ).textContent =
+    "Data loaded from GHOST_FX demo source";
+
+
+  document
+    .querySelectorAll(".market-card")
+    .forEach(card => {
+
+      card.classList.remove(
+        "selected"
+      );
+
+
+      if (
+        card.dataset.market === market
+      ) {
+
+        card.classList.add(
+          "selected"
+        );
+
+      }
+
+    });
 
 }
 
 
-marketSelect.addEventListener(
-  "change",
-  function() {
-
-    updateMarket(this.value);
-
-  }
-);
-
-
-cards.forEach(card => {
-
-  card.addEventListener(
-    "click",
+document
+  .getElementById("marketSelect")
+  .addEventListener(
+    "change",
     function() {
 
-      const market =
-        this.dataset.market;
-
-      marketSelect.value =
-        market;
-
-      updateMarket(market);
+      updateMarket(
+        this.value
+      );
 
     }
   );
 
-});
+
+document
+  .querySelectorAll(".market-card")
+  .forEach(card => {
+
+    card.addEventListener(
+      "click",
+      function() {
+
+        const market =
+          this.dataset.market;
+
+
+        document.getElementById(
+          "marketSelect"
+        ).value =
+          market;
+
+
+        updateMarket(market);
+
+      }
+    );
+
+  });
 
 
 document
@@ -984,11 +1335,18 @@ document
 
         document
           .querySelectorAll(".timeframe")
-          .forEach(item =>
-            item.classList.remove("active")
-          );
+          .forEach(item => {
 
-        this.classList.add("active");
+            item.classList.remove(
+              "active"
+            );
+
+          });
+
+
+        this.classList.add(
+          "active"
+        );
 
       }
     );
@@ -996,10 +1354,10 @@ document
   });
 
 
-updateMarket("XAU/USD");
-
+loadMarketData();
 
 </script>
+
 
 <script src="script.js"></script>
 
