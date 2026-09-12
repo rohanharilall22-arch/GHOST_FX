@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>GHOST_FX — AI Market Dashboard</title>
-
-  <link rel="stylesheet" href="style.css">
+  <title>GHOST_FX — Market Dashboard</title>
 
   <style>
     * {
@@ -16,7 +14,7 @@
     body {
       margin: 0;
       background:
-        radial-gradient(circle at top, #25105f 0%, #090914 45%, #050509 100%);
+        radial-gradient(circle at top, #29105f 0%, #090914 45%, #050509 100%);
       color: white;
       font-family: Arial, Helvetica, sans-serif;
     }
@@ -181,10 +179,11 @@
       margin: 20px 0;
       padding: 22px;
       border-radius: 15px;
-      background:
-        linear-gradient(135deg,
+      background: linear-gradient(
+        135deg,
         rgba(165,108,255,.28),
-        rgba(70,40,150,.18));
+        rgba(70,40,150,.18)
+      );
       border: 1px solid rgba(165,108,255,.35);
     }
 
@@ -238,7 +237,7 @@
       background-color: rgba(0,0,0,.3);
       background-image:
         linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+        linear-gradient(90deg,rgba(255,255,255,.05) 1px, transparent 1px);
       background-size: 45px 45px;
       border: 1px solid rgba(255,255,255,.08);
     }
@@ -418,12 +417,11 @@
   <div class="warning">
     ⚠️ <strong>DEMO MODE:</strong>
     Market values shown here are simulated for educational purposes.
-    This dashboard is not connected to live trading or trade execution.
+    This dashboard does not execute trades.
   </div>
 
   <div class="status">
-    🟢 Market data loaded successfully from
-    <strong>data/market-data.json</strong>
+    🟢 Demonstration market data loaded successfully.
   </div>
 
   <div class="selector">
@@ -454,79 +452,35 @@
 
   </div>
 
-  <!-- MARKET CARDS -->
-
   <section class="markets">
 
     <div class="market active" data-market="XAU/USD">
-
-      <div class="symbol">
-        XAU/USD
-      </div>
-
-      <div class="price" id="cardXAU">
-        2350.00
-      </div>
-
-      <div class="change">
-        Demo price
-      </div>
-
+      <div class="symbol">XAU/USD</div>
+      <div class="price" id="cardXAU">2350.00</div>
+      <div class="change">Demo price</div>
     </div>
 
     <div class="market" data-market="EUR/USD">
-
-      <div class="symbol">
-        EUR/USD
-      </div>
-
-      <div class="price" id="cardEUR">
-        1.0860
-      </div>
-
-      <div class="change">
-        Demo price
-      </div>
-
+      <div class="symbol">EUR/USD</div>
+      <div class="price" id="cardEUR">1.0860</div>
+      <div class="change">Demo price</div>
     </div>
 
     <div class="market" data-market="GBP/USD">
-
-      <div class="symbol">
-        GBP/USD
-      </div>
-
-      <div class="price" id="cardGBP">
-        1.2700
-      </div>
-
-      <div class="change">
-        Demo price
-      </div>
-
+      <div class="symbol">GBP/USD</div>
+      <div class="price" id="cardGBP">1.2700</div>
+      <div class="change">Demo price</div>
     </div>
 
     <div class="market" data-market="USD/JPY">
-
-      <div class="symbol">
-        USD/JPY
-      </div>
-
-      <div class="price" id="cardJPY">
-        150.2000
-      </div>
-
-      <div class="change">
-        Demo price
-      </div>
-
+      <div class="symbol">USD/JPY</div>
+      <div class="price" id="cardJPY">150.2000</div>
+      <div class="change">Demo price</div>
     </div>
 
   </section>
 
   <section class="main-grid">
-
-    <!-- ANALYSIS -->
 
     <div class="panel">
 
@@ -535,8 +489,8 @@
       </h2>
 
       <p class="muted">
-        GHOST_FX analysis workspace. Market values are loaded
-        from the platform's demonstration data source.
+        GHOST_FX educational analysis workspace.
+        The values displayed are simulated demonstration data.
       </p>
 
       <div class="price-box">
@@ -550,7 +504,7 @@
         </div>
 
         <div class="demo-change">
-          +0.32% — DEMO
+          DEMO MARKET VALUE
         </div>
 
         <div class="updated" id="updated">
@@ -578,8 +532,6 @@
         </span>
 
       </div>
-
-      <!-- CHART -->
 
       <div class="chart">
 
@@ -617,8 +569,6 @@
 
       </div>
 
-      <!-- AI ANALYSIS -->
-
       <div class="analysis">
 
         <div class="analysis-title">
@@ -626,63 +576,51 @@
         </div>
 
         <p id="analysisText">
-          XAU/USD is currently selected. This educational
-          demonstration interface can later be connected to
-          approved market-data sources through a secure backend.
+          XAU/USD is currently selected. This is an educational
+          demonstration of how market information can be displayed
+          and analyzed.
         </p>
 
         <div class="readings">
 
           <div class="reading">
-
             <div class="reading-label">
               Trend
             </div>
 
-            <div class="reading-value"
-                 id="trend">
+            <div class="reading-value" id="trend">
               Neutral — Demo
             </div>
-
           </div>
 
           <div class="reading">
-
             <div class="reading-label">
               Momentum
             </div>
 
-            <div class="reading-value"
-                 id="momentum">
+            <div class="reading-value" id="momentum">
               Moderate — Demo
             </div>
-
           </div>
 
           <div class="reading">
-
             <div class="reading-label">
               Volatility
             </div>
 
-            <div class="reading-value"
-                 id="volatility">
+            <div class="reading-value" id="volatility">
               Moderate — Demo
             </div>
-
           </div>
 
           <div class="reading">
-
             <div class="reading-label">
               Market State
             </div>
 
-            <div class="reading-value"
-                 id="state">
-              Neutral — Demo
+            <div class="reading-value" id="state">
+              Educational — Demo
             </div>
-
           </div>
 
         </div>
@@ -690,8 +628,6 @@
       </div>
 
     </div>
-
-    <!-- INDICATORS -->
 
     <aside class="panel">
 
@@ -706,24 +642,18 @@
       <div class="indicator">
 
         <div class="indicator-top">
-
-          <span>
-            Trend Strength
-          </span>
+          <span>Trend Strength</span>
 
           <span id="trendPercent">
             65%
           </span>
-
         </div>
 
         <div class="bar">
-
           <div class="fill"
                id="trendBar"
                style="width:65%;">
           </div>
-
         </div>
 
       </div>
@@ -731,24 +661,18 @@
       <div class="indicator">
 
         <div class="indicator-top">
-
-          <span>
-            Volatility
-          </span>
+          <span>Volatility</span>
 
           <span id="volatilityPercent">
             45%
           </span>
-
         </div>
 
         <div class="bar">
-
           <div class="fill"
                id="volatilityBar"
                style="width:45%;">
           </div>
-
         </div>
 
       </div>
@@ -756,24 +680,18 @@
       <div class="indicator">
 
         <div class="indicator-top">
-
-          <span>
-            Momentum
-          </span>
+          <span>Momentum</span>
 
           <span id="momentumPercent">
             58%
           </span>
-
         </div>
 
         <div class="bar">
-
           <div class="fill"
                id="momentumBar"
                style="width:58%;">
           </div>
-
         </div>
 
       </div>
@@ -789,7 +707,7 @@
         </div>
 
         <div class="updated">
-          No real-time prediction or trade instruction.
+          Demonstration analysis only.
         </div>
 
       </div>
@@ -797,8 +715,6 @@
     </aside>
 
   </section>
-
-  <!-- WATCHLIST -->
 
   <section class="panel watchlist">
 
@@ -811,349 +727,310 @@
     </p>
 
     <div class="watch-row">
-
       <div>
         <strong>XAU/USD</strong>
-        <div class="muted">
-          Gold / US Dollar
-        </div>
+        <div class="muted">Gold / US Dollar</div>
       </div>
 
-      <span class="tag">
-        DEMO
-      </span>
-
+      <span class="tag">DEMO</span>
     </div>
 
     <div class="watch-row">
-
       <div>
         <strong>EUR/USD</strong>
-        <div class="muted">
-          Euro / US Dollar
-        </div>
+        <div class="muted">Euro / US Dollar</div>
       </div>
 
-      <span class="tag">
-        DEMO
-      </span>
-
+      <span class="tag">DEMO</span>
     </div>
 
     <div class="watch-row">
-
       <div>
         <strong>GBP/USD</strong>
-        <div class="muted">
-          British Pound / US Dollar
-        </div>
+        <div class="muted">British Pound / US Dollar</div>
       </div>
 
-      <span class="tag">
-        DEMO
-      </span>
-
+      <span class="tag">DEMO</span>
     </div>
 
     <div class="watch-row">
-
       <div>
         <strong>USD/JPY</strong>
-        <div class="muted">
-          US Dollar / Japanese Yen
-        </div>
+        <div class="muted">US Dollar / Japanese Yen</div>
       </div>
 
-      <span class="tag">
-        DEMO
-      </span>
-
+      <span class="tag">DEMO</span>
     </div>
 
   </section>
 
   <footer>
-
     GHOST_FX is an educational demonstration platform.
     Market information shown here may be simulated and is not
     financial advice.
-
   </footer>
 
 </main>
 
 <script>
 
-  const markets = {
+const markets = {
 
-    "XAU/USD": {
-      price: 2350.00,
-      trend: 65,
-      volatility: 45,
-      momentum: 58,
-      trendText: "Neutral — Demo",
-      momentumText: "Moderate — Demo",
-      volatilityText: "Moderate — Demo"
-    },
+  "XAU/USD": {
+    price: 2350.00,
+    trend: 65,
+    volatility: 45,
+    momentum: 58,
+    trendText: "Neutral — Demo",
+    momentumText: "Moderate — Demo",
+    volatilityText: "Moderate — Demo"
+  },
 
-    "EUR/USD": {
-      price: 1.0860,
-      trend: 55,
-      volatility: 32,
-      momentum: 51,
-      trendText: "Neutral — Demo",
-      momentumText: "Moderate — Demo",
-      volatilityText: "Low — Demo"
-    },
+  "EUR/USD": {
+    price: 1.0860,
+    trend: 55,
+    volatility: 32,
+    momentum: 51,
+    trendText: "Neutral — Demo",
+    momentumText: "Moderate — Demo",
+    volatilityText: "Low — Demo"
+  },
 
-    "GBP/USD": {
-      price: 1.2700,
-      trend: 61,
-      volatility: 49,
-      momentum: 63,
-      trendText: "Moderate — Demo",
-      momentumText: "Moderate — Demo",
-      volatilityText: "Moderate — Demo"
-    },
+  "GBP/USD": {
+    price: 1.2700,
+    trend: 61,
+    volatility: 49,
+    momentum: 63,
+    trendText: "Moderate — Demo",
+    momentumText: "Moderate — Demo",
+    volatilityText: "Moderate — Demo"
+  },
 
-    "USD/JPY": {
-      price: 150.2000,
-      trend: 57,
-      volatility: 42,
-      momentum: 55,
-      trendText: "Neutral — Demo",
-      momentumText: "Moderate — Demo",
-      volatilityText: "Moderate — Demo"
-    }
-
-  };
-
-
-  const select =
-    document.getElementById("marketSelect");
-
-  const title =
-    document.getElementById("marketTitle");
-
-  const mainPrice =
-    document.getElementById("mainPrice");
-
-  const analysisText =
-    document.getElementById("analysisText");
-
-  const trend =
-    document.getElementById("trend");
-
-  const momentum =
-    document.getElementById("momentum");
-
-  const volatility =
-    document.getElementById("volatility");
-
-  const trendBar =
-    document.getElementById("trendBar");
-
-  const volatilityBar =
-    document.getElementById("volatilityBar");
-
-  const momentumBar =
-    document.getElementById("momentumBar");
-
-  const trendPercent =
-    document.getElementById("trendPercent");
-
-  const volatilityPercent =
-    document.getElementById("volatilityPercent");
-
-  const momentumPercent =
-    document.getElementById("momentumPercent");
-
-  const updated =
-    document.getElementById("updated");
-
-
-  const cards =
-    document.querySelectorAll(".market");
-
-
-  function formatPrice(market, price) {
-
-    if (market === "XAU/USD") {
-      return price.toFixed(2);
-    }
-
-    if (market === "USD/JPY") {
-      return price.toFixed(4);
-    }
-
-    return price.toFixed(4);
-
+  "USD/JPY": {
+    price: 150.2000,
+    trend: 57,
+    volatility: 42,
+    momentum: 55,
+    trendText: "Neutral — Demo",
+    momentumText: "Moderate — Demo",
+    volatilityText: "Moderate — Demo"
   }
 
+};
 
-  function updateDashboard(market) {
+const select =
+document.getElementById("marketSelect");
 
-    const data = markets[market];
+const title =
+document.getElementById("marketTitle");
 
-    title.textContent =
-      market +
-      (market === "XAU/USD"
-        ? " — Gold Analysis"
-        : " — Market Analysis");
+const mainPrice =
+document.getElementById("mainPrice");
 
-    mainPrice.textContent =
-      formatPrice(market, data.price);
+const analysisText =
+document.getElementById("analysisText");
 
-    trend.textContent =
-      data.trendText;
+const trend =
+document.getElementById("trend");
 
-    momentum.textContent =
-      data.momentumText;
+const momentum =
+document.getElementById("momentum");
 
-    volatility.textContent =
-      data.volatilityText;
+const volatility =
+document.getElementById("volatility");
 
-    trendBar.style.width =
-      data.trend + "%";
+const state =
+document.getElementById("state");
 
-    volatilityBar.style.width =
-      data.volatility + "%";
+const trendBar =
+document.getElementById("trendBar");
 
-    momentumBar.style.width =
-      data.momentum + "%";
+const volatilityBar =
+document.getElementById("volatilityBar");
 
-    trendPercent.textContent =
-      data.trend + "%";
+const momentumBar =
+document.getElementById("momentumBar");
 
-    volatilityPercent.textContent =
-      data.volatility + "%";
+const trendPercent =
+document.getElementById("trendPercent");
 
-    momentumPercent.textContent =
-      data.momentum + "%";
+const volatilityPercent =
+document.getElementById("volatilityPercent");
 
-    analysisText.textContent =
-      market +
-      " is currently selected in the GHOST_FX educational workspace. " +
-      "The displayed values are demonstration data. " +
-      "A future secure backend can process approved market-data feeds " +
-      "for educational analysis.";
+const momentumPercent =
+document.getElementById("momentumPercent");
 
-    updated.textContent =
-      "Last updated: " +
-      new Date().toLocaleTimeString();
+const updated =
+document.getElementById("updated");
 
-    cards.forEach(card => {
+const cards =
+document.querySelectorAll(".market");
 
-      card.classList.remove("active");
+function formatPrice(market, price) {
 
-      if (card.dataset.market === market) {
-        card.classList.add("active");
-      }
-
-    });
-
+  if (market === "XAU/USD") {
+    return price.toFixed(2);
   }
 
+  return price.toFixed(4);
+}
 
-  select.addEventListener("change", function() {
+function updateDashboard(market) {
 
-    updateDashboard(this.value);
+  const data = markets[market];
 
-  });
+  title.textContent =
+    market +
+    (market === "XAU/USD"
+      ? " — Gold Analysis"
+      : " — Market Analysis");
 
+  mainPrice.textContent =
+    formatPrice(market, data.price);
+
+  trend.textContent =
+    data.trendText;
+
+  momentum.textContent =
+    data.momentumText;
+
+  volatility.textContent =
+    data.volatilityText;
+
+  state.textContent =
+    "Educational — Demo";
+
+  trendBar.style.width =
+    data.trend + "%";
+
+  volatilityBar.style.width =
+    data.volatility + "%";
+
+  momentumBar.style.width =
+    data.momentum + "%";
+
+  trendPercent.textContent =
+    data.trend + "%";
+
+  volatilityPercent.textContent =
+    data.volatility + "%";
+
+  momentumPercent.textContent =
+    data.momentum + "%";
+
+  analysisText.textContent =
+    market +
+    " is currently selected in the GHOST_FX educational workspace. " +
+    "The displayed values are demonstration data and are not live " +
+    "market prices or trading instructions.";
+
+  updated.textContent =
+    "Last updated: " +
+    new Date().toLocaleTimeString();
 
   cards.forEach(card => {
 
-    card.addEventListener("click", function() {
+    card.classList.remove("active");
 
-      const market =
-        this.dataset.market;
-
-      select.value =
-        market;
-
-      updateDashboard(market);
-
-    });
+    if (card.dataset.market === market) {
+      card.classList.add("active");
+    }
 
   });
 
+}
 
-  document
+select.addEventListener("change", function() {
+
+  updateDashboard(this.value);
+
+});
+
+cards.forEach(card => {
+
+  card.addEventListener("click", function() {
+
+    const market =
+      this.dataset.market;
+
+    select.value =
+      market;
+
+    updateDashboard(market);
+
+  });
+
+});
+
+document
+.querySelectorAll(".timeframe")
+.forEach(button => {
+
+  button.addEventListener("click", function() {
+
+    document
     .querySelectorAll(".timeframe")
-    .forEach(button => {
+    .forEach(item =>
+      item.classList.remove("active")
+    );
 
-      button.addEventListener("click", function() {
+    this.classList.add("active");
 
-        document
-          .querySelectorAll(".timeframe")
-          .forEach(item =>
-            item.classList.remove("active")
-          );
+  });
 
-        this.classList.add("active");
+});
 
-      });
+/*
+  DEMO PRICE MOVEMENT
 
-    });
+  These movements are simulated only.
+  They are NOT live market data.
+*/
 
+setInterval(function() {
 
-  /*
-    DEMO PRICE MOVEMENT
+  Object.keys(markets).forEach(market => {
 
-    This only creates small simulated movements
-    so the interface feels alive.
+    const data =
+      markets[market];
 
-    It is NOT live market data.
-  */
+    const movement =
+      (Math.random() - 0.5) *
+      (market === "XAU/USD" ? 2 : 0.001);
 
-  setInterval(function() {
+    data.price += movement;
 
-    Object.keys(markets).forEach(market => {
+  });
 
-      const data =
-        markets[market];
+  document.getElementById("cardXAU").textContent =
+    formatPrice(
+      "XAU/USD",
+      markets["XAU/USD"].price
+    );
 
-      const movement =
-        (Math.random() - 0.5) *
-        (market === "XAU/USD" ? 2 : 0.001);
+  document.getElementById("cardEUR").textContent =
+    formatPrice(
+      "EUR/USD",
+      markets["EUR/USD"].price
+    );
 
-      data.price += movement;
+  document.getElementById("cardGBP").textContent =
+    formatPrice(
+      "GBP/USD",
+      markets["GBP/USD"].price
+    );
 
-    });
+  document.getElementById("cardJPY").textContent =
+    formatPrice(
+      "USD/JPY",
+      markets["USD/JPY"].price
+    );
 
+  updateDashboard(select.value);
 
-    document.getElementById("cardXAU").textContent =
-      formatPrice(
-        "XAU/USD",
-        markets["XAU/USD"].price
-      );
+}, 5000);
 
-    document.getElementById("cardEUR").textContent =
-      formatPrice(
-        "EUR/USD",
-        markets["EUR/USD"].price
-      );
-
-    document.getElementById("cardGBP").textContent =
-      formatPrice(
-        "GBP/USD",
-        markets["GBP/USD"].price
-      );
-
-    document.getElementById("cardJPY").textContent =
-      formatPrice(
-        "USD/JPY",
-        markets["USD/JPY"].price
-      );
-
-
-    updateDashboard(select.value);
-
-  }, 5000);
-
-
-  updateDashboard("XAU/USD");
+updateDashboard("XAU/USD");
 
 </script>
 
