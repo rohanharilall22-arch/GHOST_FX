@@ -1,0 +1,26 @@
+{
+  "status": "demo",
+  "lastUpdated": "2026-09-12T00:00:00Z",
+  "markets": {
+    "XAU/USD": {
+      "name": "Gold / US Dollar",
+      "price": 2350.00,
+      "changePercent": 0.32
+    },
+    "EUR/USD": {
+      "name": "Euro / US Dollar",
+      "price": 1.0850,
+      "changePercent": -0.12
+    },
+    "GBP/USD": {
+      "name": "British Pound / US Dollar",
+      "price": 1.2700,
+      "changePercent": 0.21
+    },
+    "USD/JPY": {
+      "name": "US Dollar / Japanese Yen",
+      "price": 150.20,
+      "changePercent": -0.08
+    }
+  }
+}
