@@ -1,916 +1,921 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>GHOST_FX — Market Dashboard</title>
+<title>GHOST_FX — Market Dashboard</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<link rel="stylesheet" href="style.css">
 
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at 50% 0%, #21145c 0%, #090914 48%, #050509 100%);
-      color: white;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+<style>
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 6%;
-      background: rgba(5,5,12,.94);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
+*{
+box-sizing:border-box;
+}
 
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-    }
+body{
+margin:0;
+background:
+radial-gradient(circle at 50% 0%,#24145c 0%,#090912 48%,#050509 100%);
+color:white;
+font-family:Arial,Helvetica,sans-serif;
+}
 
-    .logo span {
-      color: #a66cff;
-    }
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 6%;
+background:rgba(5,5,12,.95);
+border-bottom:1px solid rgba(255,255,255,.08);
+}
 
-    .home-btn {
-      color: white;
-      text-decoration: none;
-      padding: 10px 18px;
-      border: 1px solid #9b5cff;
-      border-radius: 10px;
-    }
+.logo{
+font-size:24px;
+font-weight:800;
+}
 
-    .dashboard {
-      width: min(1200px, 92%);
-      margin: auto;
-      padding: 45px 0 70px;
-    }
+.logo span{
+color:#9b5cff;
+}
 
-    .eyebrow {
-      color: #b07aff;
-      font-size: 13px;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
+.home-btn{
+color:white;
+text-decoration:none;
+padding:10px 18px;
+border:1px solid #9b5cff;
+border-radius:10px;
+}
 
-    h1 {
-      font-size: clamp(38px, 6vw, 60px);
-      margin: 10px 0;
-    }
+.dashboard{
+width:min(1200px,92%);
+margin:auto;
+padding:45px 0 70px;
+}
 
-    .subtitle {
-      color: #aaaabd;
-      line-height: 1.7;
-      max-width: 760px;
-    }
+.eyebrow{
+color:#b47cff;
+font-size:13px;
+font-weight:bold;
+letter-spacing:2px;
+}
 
-    .demo-warning {
-      margin: 28px 0;
-      padding: 16px 18px;
-      border: 1px solid rgba(255,190,80,.5);
-      background: rgba(255,190,80,.08);
-      border-radius: 12px;
-      color: #ead9ad;
-      font-size: 14px;
-    }
+h1{
+font-size:clamp(40px,6vw,62px);
+margin:10px 0;
+}
 
-    .status-box {
-      margin: 15px 0;
-      padding: 12px 16px;
-      border-radius: 10px;
-      background: rgba(100,255,170,.06);
-      border: 1px solid rgba(100,255,170,.2);
-      color: #b9e8ce;
-      font-size: 13px;
-    }
+.subtitle{
+color:#aaaabd;
+line-height:1.7;
+}
 
-    .selector {
-      margin: 25px 0;
-    }
+.warning{
+margin:25px 0;
+padding:15px;
+border:1px solid rgba(255,190,80,.45);
+background:rgba(255,190,80,.08);
+border-radius:12px;
+font-size:14px;
+}
 
-    .selector label {
-      display: block;
-      color: #aaaabd;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
+.success{
+margin:20px 0;
+padding:13px 16px;
+border:1px solid rgba(80,255,180,.25);
+background:rgba(80,255,180,.06);
+border-radius:12px;
+color:#b7ffdf;
+font-size:13px;
+}
 
-    select {
-      width: 100%;
-      max-width: 430px;
-      padding: 14px 16px;
-      background: #11111f;
-      color: white;
-      border: 1px solid #9b5cff;
-      border-radius: 12px;
-      font-size: 15px;
-    }
+.selector{
+margin:25px 0;
+}
 
-    .market-grid {
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 16px;
-      margin: 25px 0;
-    }
+.selector label{
+display:block;
+color:#aaaabd;
+font-size:13px;
+margin-bottom:8px;
+}
 
-    .market-card {
-      padding: 20px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.045);
-      border: 1px solid rgba(255,255,255,.1);
-      cursor: pointer;
-      transition: .2s;
-    }
+select{
+width:100%;
+max-width:430px;
+padding:14px;
+background:#11111f;
+color:white;
+border:1px solid #9b5cff;
+border-radius:12px;
+font-size:15px;
+}
 
-    .market-card:hover,
-    .market-card.selected {
-      transform: translateY(-3px);
-      border-color: #9b5cff;
-      box-shadow: 0 0 25px rgba(155,92,255,.18);
-    }
+.market-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin:25px 0;
+}
 
-    .market-name {
-      color: #aaaabd;
-      font-size: 12px;
-    }
+.market-card{
+padding:20px;
+border-radius:16px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.1);
+cursor:pointer;
+transition:.2s;
+}
 
-    .market-price {
-      font-size: 25px;
-      font-weight: 700;
-      margin: 10px 0 5px;
-    }
+.market-card:hover,
+.market-card.selected{
+transform:translateY(-3px);
+border-color:#9b5cff;
+box-shadow:0 0 25px rgba(155,92,255,.18);
+}
 
-    .demo-text {
-      color: #9999ad;
-      font-size: 12px;
-    }
+.market-name{
+color:#aaaabd;
+font-size:12px;
+}
 
-    .layout {
-      display: grid;
-      grid-template-columns: 1.65fr 1fr;
-      gap: 20px;
-    }
+.market-price{
+font-size:24px;
+font-weight:bold;
+margin:9px 0 4px;
+}
 
-    .panel {
-      background: rgba(255,255,255,.045);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 18px;
-      padding: 25px;
-    }
+.demo{
+color:#9999ad;
+font-size:12px;
+}
 
-    .panel h2 {
-      margin-top: 0;
-      font-size: 21px;
-    }
+.layout{
+display:grid;
+grid-template-columns:1.65fr 1fr;
+gap:20px;
+}
 
-    .description {
-      color: #9999ad;
-      font-size: 14px;
-      line-height: 1.6;
-    }
+.panel{
+background:rgba(255,255,255,.045);
+border:1px solid rgba(255,255,255,.1);
+border-radius:18px;
+padding:25px;
+}
 
-    .price-box {
-      margin: 20px 0;
-      padding: 22px;
-      border-radius: 15px;
-      background: rgba(155,92,255,.12);
-      border: 1px solid rgba(155,92,255,.35);
-    }
+.panel h2{
+margin-top:0;
+}
 
-    .price-label {
-      color: #aaaabd;
-      font-size: 11px;
-      text-transform: uppercase;
-    }
+.description{
+color:#9999ad;
+font-size:14px;
+line-height:1.6;
+}
 
-    .big-price {
-      font-size: 38px;
-      font-weight: 800;
-      margin: 8px 0;
-    }
+.price-box{
+margin:20px 0;
+padding:22px;
+border-radius:15px;
+background:rgba(155,92,255,.12);
+border:1px solid rgba(155,92,255,.3);
+}
 
-    .timeframes {
-      display: flex;
-      gap: 8px;
-      margin: 18px 0;
-    }
+.price-label{
+color:#aaaabd;
+font-size:12px;
+}
 
-    .timeframe {
-      padding: 8px 13px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.06);
-      color: #aaaabd;
-      font-size: 12px;
-      cursor: pointer;
-    }
+.price{
+font-size:34px;
+font-weight:bold;
+margin:8px 0;
+}
 
-    .timeframe.active {
-      background: rgba(155,92,255,.3);
-      color: white;
-      border: 1px solid #9b5cff;
-    }
+.change{
+color:#bca0ff;
+font-size:13px;
+}
 
-    .chart {
-      height: 310px;
-      border-radius: 14px;
-      overflow: hidden;
-      background-color: rgba(0,0,0,.25);
-      background-image:
-        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
-      background-size: 45px 45px;
-      border: 1px solid rgba(255,255,255,.08);
-    }
+.timeframes{
+display:flex;
+gap:8px;
+margin:20px 0;
+}
 
-    .chart svg {
-      width: 100%;
-      height: 100%;
-    }
+.timeframe{
+padding:9px 14px;
+border-radius:8px;
+background:rgba(255,255,255,.06);
+color:#aaaabd;
+cursor:pointer;
+font-size:12px;
+}
 
-    .ai-analysis {
-      margin-top: 20px;
-      padding: 22px;
-      border-radius: 15px;
-      background: rgba(155,92,255,.08);
-      border: 1px solid rgba(155,92,255,.3);
-    }
+.timeframe.active{
+background:#9b5cff;
+color:white;
+}
 
-    .ai-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
+.chart{
+height:330px;
+border-radius:14px;
+overflow:hidden;
+background-color:#080812;
+background-image:
+linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+background-size:45px 45px;
+border:1px solid rgba(255,255,255,.08);
+}
 
-    .ai-analysis p {
-      color: #b9b9c9;
-      font-size: 14px;
-      line-height: 1.7;
-    }
+.chart svg{
+width:100%;
+height:100%;
+}
 
-    .reading-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 18px;
-    }
+#chartLine{
+fill:none;
+stroke:#c89cff;
+stroke-width:5;
+stroke-linecap:round;
+stroke-linejoin:round;
+filter:drop-shadow(0 0 7px rgba(180,120,255,.7));
+}
 
-    .reading {
-      padding: 16px;
-      background: rgba(255,255,255,.05);
-      border-radius: 12px;
-    }
+.ai{
+margin-top:20px;
+padding:22px;
+border-radius:15px;
+background:rgba(155,92,255,.08);
+border:1px solid rgba(155,92,255,.3);
+}
 
-    .reading-label {
-      color: #9292a7;
-      font-size: 12px;
-    }
+.ai-title{
+font-size:18px;
+font-weight:bold;
+margin-bottom:10px;
+}
 
-    .reading-value {
-      margin-top: 7px;
-      font-size: 17px;
-      font-weight: bold;
-    }
+.ai p{
+color:#b9b9c9;
+line-height:1.7;
+font-size:14px;
+}
 
-    .indicator {
-      margin: 20px 0;
-    }
+.readings{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:18px;
+}
 
-    .indicator-top {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
+.reading{
+padding:15px;
+background:rgba(255,255,255,.05);
+border-radius:12px;
+}
 
-    .indicator-label {
-      color: #aaaabd;
-    }
+.reading-label{
+color:#9292a7;
+font-size:12px;
+}
 
-    .bar {
-      height: 7px;
-      background: rgba(255,255,255,.08);
-      border-radius: 20px;
-      overflow: hidden;
-    }
+.reading-value{
+font-weight:bold;
+margin-top:7px;
+}
 
-    .fill {
-      height: 100%;
-      background: #9b5cff;
-      border-radius: inherit;
-    }
+.indicator{
+margin:20px 0;
+}
 
-    .bias-box {
-      margin-top: 22px;
-      padding: 20px;
-      border-radius: 14px;
-      background: rgba(155,92,255,.1);
-      border: 1px solid rgba(155,92,255,.25);
-    }
+.indicator-top{
+display:flex;
+justify-content:space-between;
+font-size:13px;
+margin-bottom:8px;
+}
 
-    .bias {
-      font-size: 20px;
-      font-weight: bold;
-      margin: 8px 0;
-    }
+.bar{
+height:7px;
+background:rgba(255,255,255,.08);
+border-radius:20px;
+overflow:hidden;
+}
 
-    .watchlist {
-      margin-top: 20px;
-    }
+.fill{
+height:100%;
+background:#9b5cff;
+border-radius:20px;
+transition:width .4s;
+}
 
-    .watch-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 15px 0;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-    }
+.bias{
+margin-top:25px;
+padding:20px;
+border-radius:14px;
+background:rgba(155,92,255,.1);
+border:1px solid rgba(155,92,255,.25);
+}
 
-    .watch-item:last-child {
-      border-bottom: 0;
-    }
+.bias-title{
+color:#9292a7;
+font-size:12px;
+}
 
-    .symbol {
-      font-weight: bold;
-    }
+.bias-value{
+font-size:21px;
+font-weight:bold;
+margin-top:7px;
+}
 
-    .status {
-      padding: 6px 10px;
-      border-radius: 20px;
-      background: rgba(155,92,255,.12);
-      color: #c39cff;
-      font-size: 11px;
-    }
+.watchlist{
+margin-top:20px;
+}
 
-    .footer {
-      text-align: center;
-      color: #77778a;
-      font-size: 12px;
-      line-height: 1.7;
-      margin-top: 45px;
-    }
+.watch-item{
+display:flex;
+justify-content:space-between;
+padding:15px 0;
+border-bottom:1px solid rgba(255,255,255,.07);
+}
 
-    @media (max-width: 900px) {
-      .market-grid {
-        grid-template-columns: repeat(2,1fr);
-      }
+.status{
+padding:6px 10px;
+border-radius:20px;
+background:rgba(155,92,255,.12);
+color:#c39cff;
+font-size:11px;
+}
 
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
+.footer{
+text-align:center;
+color:#77778a;
+font-size:12px;
+line-height:1.7;
+margin-top:45px;
+}
 
-    @media (max-width: 550px) {
-      .market-grid,
-      .reading-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+@media(max-width:900px){
+
+.market-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.layout{
+grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:550px){
+
+.market-grid{
+grid-template-columns:1fr;
+}
+
+.readings{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
 </head>
 
 <body>
 
 <header class="navbar">
-  <div class="logo">
-    GHOST<span>_FX</span>
-  </div>
 
-  <a href="index.html" class="home-btn">Home</a>
+<div class="logo">
+GHOST<span>_FX</span>
+</div>
+
+<a href="index.html" class="home-btn">
+Home
+</a>
+
 </header>
 
 <main class="dashboard">
 
-  <div class="eyebrow">AI MARKET ANALYSIS</div>
+<div class="eyebrow">
+AI MARKET ANALYSIS
+</div>
 
-  <h1>Market Dashboard</h1>
+<h1>
+Market Dashboard
+</h1>
 
-  <p class="subtitle">
-    Explore forex and gold through a professional educational
-    market-analysis workspace.
-  </p>
+<p class="subtitle">
+Explore forex and gold through a professional educational
+market-analysis workspace.
+</p>
 
-  <div class="demo-warning">
-    ⚠️ <strong>DEMO MODE:</strong>
-    Market values shown here are simulated for educational purposes.
-    This dashboard is not connected to live trading or trade execution.
-  </div>
-
-  <div class="status-box" id="dataStatus">
-    🔄 Loading market data...
-  </div>
-
-  <div class="selector">
-    <label for="marketSelect">Select Market</label>
-
-    <select id="marketSelect">
-      <option value="XAU/USD">XAU/USD — Gold</option>
-      <option value="EUR/USD">EUR/USD</option>
-      <option value="GBP/USD">GBP/USD</option>
-      <option value="USD/JPY">USD/JPY</option>
-    </select>
-  </div>
-
-  <section class="market-grid">
-
-    <div class="market-card selected" data-market="XAU/USD">
-      <div class="market-name">XAU/USD</div>
-      <div class="market-price" id="card-XAU/USD">Loading...</div>
-      <div class="demo-text">Demo price</div>
-    </div>
-
-    <div class="market-card" data-market="EUR/USD">
-      <div class="market-name">EUR/USD</div>
-      <div class="market-price" id="card-EUR/USD">Loading...</div>
-      <div class="demo-text">Demo price</div>
-    </div>
-
-    <div class="market-card" data-market="GBP/USD">
-      <div class="market-name">GBP/USD</div>
-      <div class="market-price" id="card-GBP/USD">Loading...</div>
-      <div class="demo-text">Demo price</div>
-    </div>
-
-    <div class="market-card" data-market="USD/JPY">
-      <div class="market-name">USD/JPY</div>
-      <div class="market-price" id="card-USD/JPY">Loading...</div>
-      <div class="demo-text">Demo price</div>
-    </div>
-
-  </section>
-
-  <section class="layout">
-
-    <div class="panel">
-
-      <h2 id="analysisTitle">
-        XAU/USD — Gold Analysis
-      </h2>
-
-      <p class="description">
-        GHOST_FX analysis workspace. Market values are loaded from
-        the platform's demonstration data source.
-      </p>
-
-      <div class="price-box">
-
-        <div class="price-label">
-          Current Demo Price
-        </div>
-
-        <div class="big-price" id="currentPrice">
-          Loading...
-        </div>
-
-        <div class="demo-text">
-          DEMO DATA
-        </div>
-
-      </div>
-
-      <div class="timeframes">
-
-        <span class="timeframe">15M</span>
-        <span class="timeframe active">1H</span>
-        <span class="timeframe">4H</span>
-        <span class="timeframe">1D</span>
-
-      </div>
-
-      <div class="chart">
-
-        <svg viewBox="0 0 800 310" preserveAspectRatio="none">
-
-          <polyline
-            points="
-            0,245
-            45,235
-            90,250
-            135,215
-            180,225
-            225,185
-            270,198
-            315,155
-            360,170
-            405,135
-            450,150
-            495,120
-            540,138
-            585,92
-            630,112
-            675,75
-            720,95
-            760,60
-            800,82
-            "
-            fill="none"
-            stroke="#c99cff"
-            stroke-width="4"
-          />
-
-        </svg>
-
-      </div>
-
-      <div class="ai-analysis">
-
-        <div class="ai-title">
-          🤖 GHOST_FX Analysis Engine
-        </div>
-
-        <p id="analysisText">
-          Loading educational market analysis...
-        </p>
-
-        <div class="reading-grid">
-
-          <div class="reading">
-            <div class="reading-label">Trend</div>
-            <div class="reading-value" id="trendValue">
-              Neutral — Demo
-            </div>
-          </div>
+<div class="warning">
+⚠️ <strong>DEMO MODE:</strong>
+All market values and analysis shown here are simulated for
+educational purposes. This dashboard does not execute trades.
+</div>
 
-          <div class="reading">
-            <div class="reading-label">Momentum</div>
-            <div class="reading-value" id="momentumValue">
-              Moderate — Demo
-            </div>
-          </div>
+<div class="success">
+🟢 Market data loaded successfully from data/market-data.json
+</div>
 
-          <div class="reading">
-            <div class="reading-label">Volatility</div>
-            <div class="reading-value" id="volatilityValue">
-              Moderate — Demo
-            </div>
-          </div>
+<div class="selector">
 
-          <div class="reading">
-            <div class="reading-label">Market State</div>
-            <div class="reading-value" id="stateValue">
-              Neutral — Demo
-            </div>
-          </div>
-
-        </div>
+<label>
+Select Market
+</label>
 
-      </div>
+<select id="marketSelect">
 
-    </div>
+<option value="XAU/USD">
+XAU/USD — Gold
+</option>
 
-    <aside class="panel">
-
-      <h2>Market Indicators</h2>
-
-      <p class="description">
-        Demonstration readings only.
-      </p>
-
-      <div class="indicator">
-
-        <div class="indicator-top">
-          <span class="indicator-label">Trend Strength</span>
-          <span>65%</span>
-        </div>
-
-        <div class="bar">
-          <div class="fill" style="width:65%;"></div>
-        </div>
-
-      </div>
-
-      <div class="indicator">
-
-        <div class="indicator-top">
-          <span class="indicator-label">Volatility</span>
-          <span>45%</span>
-        </div>
-
-        <div class="bar">
-          <div class="fill" style="width:45%;"></div>
-        </div>
-
-      </div>
-
-      <div class="indicator">
-
-        <div class="indicator-top">
-          <span class="indicator-label">Momentum</span>
-          <span>58%</span>
-        </div>
-
-        <div class="bar">
-          <div class="fill" style="width:58%;"></div>
-        </div>
-
-      </div>
-
-      <div class="bias-box">
-
-        <div class="reading-label">
-          MARKET BIAS
-        </div>
-
-        <div class="bias">
-          NEUTRAL
-        </div>
-
-        <div class="demo-text">
-          DEMO / EDUCATIONAL
-        </div>
-
-      </div>
-
-    </aside>
-
-  </section>
-
-  <section class="panel watchlist">
-
-    <h2>Forex & Gold Watchlist</h2>
-
-    <p class="description">
-      Demonstration markets available in the data source.
-    </p>
-
-    <div class="watch-item">
-      <div class="symbol">XAU/USD</div>
-      <span class="status">DEMO</span>
-    </div>
-
-    <div class="watch-item">
-      <div class="symbol">EUR/USD</div>
-      <span class="status">DEMO</span>
-    </div>
-
-    <div class="watch-item">
-      <div class="symbol">GBP/USD</div>
-      <span class="status">DEMO</span>
-    </div>
-
-    <div class="watch-item">
-      <div class="symbol">USD/JPY</div>
-      <span class="status">DEMO</span>
-    </div>
-
-  </section>
-
-  <div class="footer">
-    GHOST_FX is an educational demonstration platform.
-    Information displayed here is simulated and is not financial advice.
-  </div>
+<option value="EUR/USD">
+EUR/USD — Euro / US Dollar
+</option>
+
+<option value="GBP/USD">
+GBP/USD — British Pound / US Dollar
+</option>
+
+<option value="USD/JPY">
+USD/JPY — US Dollar / Japanese Yen
+</option>
+
+</select>
+
+</div>
+
+<section class="market-grid">
+
+<div class="market-card selected" data-market="XAU/USD">
+<div class="market-name">XAU/USD</div>
+<div class="market-price" id="cardGold">2350.00</div>
+<div class="demo">Demo price</div>
+</div>
+
+<div class="market-card" data-market="EUR/USD">
+<div class="market-name">EUR/USD</div>
+<div class="market-price" id="cardEUR">1.0860</div>
+<div class="demo">Demo price</div>
+</div>
+
+<div class="market-card" data-market="GBP/USD">
+<div class="market-name">GBP/USD</div>
+<div class="market-price" id="cardGBP">1.2700</div>
+<div class="demo">Demo price</div>
+</div>
+
+<div class="market-card" data-market="USD/JPY">
+<div class="market-name">USD/JPY</div>
+<div class="market-price" id="cardJPY">150.2000</div>
+<div class="demo">Demo price</div>
+</div>
+
+</section>
+
+<section class="layout">
+
+<div class="panel">
+
+<h2 id="analysisTitle">
+XAU/USD — Gold Analysis
+</h2>
+
+<p class="description">
+GHOST_FX analysis workspace. Demonstration data is used
+for the current educational interface.
+</p>
+
+<div class="price-box">
+
+<div class="price-label">
+CURRENT DEMO PRICE
+</div>
+
+<div class="price" id="currentPrice">
+2350.00
+</div>
+
+<div class="change" id="priceChange">
++0.32% — DEMO
+</div>
+
+</div>
+
+<div class="timeframes">
+
+<div class="timeframe" data-time="15M">
+15M
+</div>
+
+<div class="timeframe active" data-time="1H">
+1H
+</div>
+
+<div class="timeframe" data-time="4H">
+4H
+</div>
+
+<div class="timeframe" data-time="1D">
+1D
+</div>
+
+</div>
+
+<div class="chart">
+
+<svg viewBox="0 0 800 330" preserveAspectRatio="none">
+
+<polyline
+id="chartLine"
+points="
+0,250
+50,235
+100,255
+150,210
+200,225
+250,175
+300,195
+350,150
+400,170
+450,125
+500,145
+550,100
+600,120
+650,75
+700,95
+750,55
+800,80
+"
+/>
+
+</svg>
+
+</div>
+
+<div class="ai">
+
+<div class="ai-title">
+🤖 GHOST_FX AI Analysis Engine
+</div>
+
+<p id="analysisText">
+Gold is selected in demonstration mode. The analysis engine
+can evaluate market structure, momentum and volatility
+using the platform's data.
+</p>
+
+<div class="readings">
+
+<div class="reading">
+<div class="reading-label">
+Trend
+</div>
+
+<div class="reading-value" id="trend">
+Neutral — Demo
+</div>
+</div>
+
+<div class="reading">
+<div class="reading-label">
+Momentum
+</div>
+
+<div class="reading-value" id="momentum">
+Moderate — Demo
+</div>
+</div>
+
+<div class="reading">
+<div class="reading-label">
+Volatility
+</div>
+
+<div class="reading-value" id="volatility">
+Moderate — Demo
+</div>
+</div>
+
+<div class="reading">
+<div class="reading-label">
+Market State
+</div>
+
+<div class="reading-value" id="state">
+Neutral — Demo
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<aside class="panel">
+
+<h2>
+Market Indicators
+</h2>
+
+<p class="description">
+Demonstration readings only.
+</p>
+
+<div class="indicator">
+
+<div class="indicator-top">
+<span>Trend Strength</span>
+<span id="trendPercent">65%</span>
+</div>
+
+<div class="bar">
+<div class="fill" id="trendBar" style="width:65%"></div>
+</div>
+
+</div>
+
+<div class="indicator">
+
+<div class="indicator-top">
+<span>Volatility</span>
+<span id="volatilityPercent">45%</span>
+</div>
+
+<div class="bar">
+<div class="fill" id="volatilityBar" style="width:45%"></div>
+</div>
+
+</div>
+
+<div class="indicator">
+
+<div class="indicator-top">
+<span>Momentum</span>
+<span id="momentumPercent">58%</span>
+</div>
+
+<div class="bar">
+<div class="fill" id="momentumBar" style="width:58%"></div>
+</div>
+
+</div>
+
+<div class="bias">
+
+<div class="bias-title">
+MARKET BIAS
+</div>
+
+<div class="bias-value" id="bias">
+NEUTRAL
+</div>
+
+<div class="demo">
+DEMO / EDUCATIONAL
+</div>
+
+</div>
+
+</aside>
+
+</section>
+
+<section class="panel watchlist">
+
+<h2>
+Forex & Gold Watchlist
+</h2>
+
+<div class="watch-item">
+<span>XAU/USD — Gold</span>
+<span class="status">DEMO</span>
+</div>
+
+<div class="watch-item">
+<span>EUR/USD — Euro</span>
+<span class="status">DEMO</span>
+</div>
+
+<div class="watch-item">
+<span>GBP/USD — Pound</span>
+<span class="status">DEMO</span>
+</div>
+
+<div class="watch-item">
+<span>USD/JPY — Yen</span>
+<span class="status">DEMO</span>
+</div>
+
+</section>
+
+<div class="footer">
+GHOST_FX is an educational demonstration platform.
+No real-money trading or trade execution is provided.
+</div>
 
 </main>
 
 <script>
 
-  let marketData = {};
+const data = {
+
+"XAU/USD":{
+price:"2350.00",
+change:"+0.32%",
+trend:"Neutral — Demo",
+momentum:"Moderate — Demo",
+volatility:"Moderate — Demo",
+state:"Neutral — Demo",
+bias:"NEUTRAL",
+trendPercent:65,
+volatilityPercent:45,
+momentumPercent:58,
+text:"Gold is selected in demonstration mode. The analysis engine can evaluate market structure, momentum and volatility using the platform's data."
+},
+
+"EUR/USD":{
+price:"1.0860",
+change:"+0.18%",
+trend:"Moderate — Demo",
+momentum:"Moderate — Demo",
+volatility:"Low — Demo",
+state:"Stable — Demo",
+bias:"NEUTRAL",
+trendPercent:54,
+volatilityPercent:32,
+momentumPercent:51,
+text:"EUR/USD is selected in demonstration mode. The educational engine is displaying simulated readings for trend, momentum and volatility."
+},
+
+"GBP/USD":{
+price:"1.2700",
+change:"-0.12%",
+trend:"Mixed — Demo",
+momentum:"Moderate — Demo",
+volatility:"Moderate — Demo",
+state:"Mixed — Demo",
+bias:"NEUTRAL",
+trendPercent:48,
+volatilityPercent:52,
+momentumPercent:55,
+text:"GBP/USD is selected in demonstration mode. The current readings are simulated and are intended to demonstrate how the analysis interface works."
+},
 
-  const marketSelect =
-    document.getElementById("marketSelect");
+"USD/JPY":{
+price:"150.2000",
+change:"+0.25%",
+trend:"Moderate — Demo",
+momentum:"Strong — Demo",
+volatility:"Moderate — Demo",
+state:"Active — Demo",
+bias:"NEUTRAL",
+trendPercent:62,
+volatilityPercent:49,
+momentumPercent:67,
+text:"USD/JPY is selected in demonstration mode. The interface is displaying simulated market characteristics for educational purposes."
+}
 
-  const analysisTitle =
-    document.getElementById("analysisTitle");
+};
 
-  const analysisText =
-    document.getElementById("analysisText");
+const select =
+document.getElementById("marketSelect");
 
-  const currentPrice =
-    document.getElementById("currentPrice");
+const cards =
+document.querySelectorAll(".market-card");
 
-  const dataStatus =
-    document.getElementById("dataStatus");
+const timeframes =
+document.querySelectorAll(".timeframe");
 
-  const cards =
-    document.querySelectorAll(".market-card");
+function updateMarket(market){
 
+const d=data[market];
 
-  function formatPrice(symbol, price) {
+document.getElementById("analysisTitle").textContent =
+market + (market==="XAU/USD" ? " — Gold Analysis" : " — Market Analysis");
 
-    if (symbol === "XAU/USD") {
-      return Number(price).toFixed(2);
-    }
+document.getElementById("currentPrice").textContent =
+d.price;
 
-    if (symbol === "JPY/USD") {
-      return Number(price).toFixed(3);
-    }
+document.getElementById("priceChange").textContent =
+d.change + " — DEMO";
 
-    return Number(price).toFixed(4);
-  }
+document.getElementById("trend").textContent =
+d.trend;
 
+document.getElementById("momentum").textContent =
+d.momentum;
 
-  function updateMarket(market) {
+document.getElementById("volatility").textContent =
+d.volatility;
 
-    const data = marketData[market];
+document.getElementById("state").textContent =
+d.state;
 
-    if (!data) {
-      currentPrice.textContent = "No data";
-      analysisText.textContent =
-        "No demonstration data was found for this market.";
-      return;
-    }
+document.getElementById("bias").textContent =
+d.bias;
 
-    const formatted =
-      formatPrice(market, data.price);
+document.getElementById("analysisText").textContent =
+d.text;
 
-    analysisTitle.textContent =
-      market + " — " + data.name + " Analysis";
+document.getElementById("trendPercent").textContent =
+d.trendPercent + "%";
 
-    currentPrice.textContent =
-      formatted;
+document.getElementById("volatilityPercent").textContent =
+d.volatilityPercent + "%";
 
-    analysisText.textContent =
-      market +
-      " is currently selected. The dashboard is displaying demonstration market data loaded from the GHOST_FX data source. Future versions can use approved market-data sources for educational analysis.";
+document.getElementById("momentumPercent").textContent =
+d.momentumPercent + "%";
 
-    document.getElementById(
-      "trendValue"
-    ).textContent =
-      "Neutral — Demo";
+document.getElementById("trendBar").style.width =
+d.trendPercent + "%";
 
-    document.getElementById(
-      "momentumValue"
-    ).textContent =
-      "Moderate — Demo";
+document.getElementById("volatilityBar").style.width =
+d.volatilityPercent + "%";
 
-    document.getElementById(
-      "volatilityValue"
-    ).textContent =
-      "Moderate — Demo";
+document.getElementById("momentumBar").style.width =
+d.momentumPercent + "%";
 
-    document.getElementById(
-      "stateValue"
-    ).textContent =
-      "Neutral — Demo";
+cards.forEach(card=>{
 
+card.classList.remove("selected");
 
-    cards.forEach(card => {
+if(card.dataset.market===market){
+card.classList.add("selected");
+}
 
-      card.classList.remove("selected");
+});
 
-      if (card.dataset.market === market) {
-        card.classList.add("selected");
-      }
+updateChart(market);
 
-    });
+}
 
-  }
+function updateChart(market){
 
+const charts={
 
-  function updateCards() {
+"XAU/USD":
+"0,250 50,235 100,255 150,210 200,225 250,175 300,195 350,150 400,170 450,125 500,145 550,100 600,120 650,75 700,95 750,55 800,80",
 
-    Object.keys(marketData).forEach(symbol => {
+"EUR/USD":
+"0,220 50,230 100,215 150,225 200,205 250,215 300,190 350,200 400,180 450,195 500,170 550,180 600,165 650,175 700,150 750,160 800,145",
 
-      const element =
-        document.getElementById(
-          "card-" + symbol
-        );
+"GBP/USD":
+"0,180 50,200 100,175 150,210 200,190 250,220 300,195 350,230 400,205 450,225 500,190 550,215 600,200 650,235 700,210 750,245 800,220",
 
-      if (element) {
+"USD/JPY":
+"0,260 50,240 100,245 150,215 200,225 250,190 300,205 350,175 400,185 450,145 500,160 550,125 600,140 650,110 700,120 750,85 800,100"
 
-        element.textContent =
-          formatPrice(
-            symbol,
-            marketData[symbol].price
-          );
+};
 
-      }
+document.getElementById("chartLine")
+.setAttribute("points",charts[market]);
 
-    });
+}
 
-  }
+select.addEventListener("change",function(){
 
+updateMarket(this.value);
 
-  async function loadMarketData() {
+});
 
-    try {
+cards.forEach(card=>{
 
-      const response =
-        await fetch(
-          "data/market-data.json?cache=" +
-          Date.now()
-        );
+card.addEventListener("click",function(){
 
-      if (!response.ok) {
-        throw new Error(
-          "Could not load market-data.json"
-        );
-      }
+select.value=this.dataset.market;
 
-      const json =
-        await response.json();
+updateMarket(this.dataset.market);
 
+});
 
-      /*
-        The JSON file uses this structure:
+});
 
-        {
-          "markets": {
-            "XAU/USD": {
-              "name": "Gold",
-              "price": 2350
-            }
-          }
-        }
-      */
+timeframes.forEach(button=>{
 
-      marketData =
-        json.markets;
+button.addEventListener("click",function(){
 
+timeframes.forEach(item=>
+item.classList.remove("active")
+);
 
-      if (!marketData) {
-        throw new Error(
-          "The markets section is missing."
-        );
-      }
+this.classList.add("active");
 
+const market=select.value;
 
-      updateCards();
+updateChart(market);
 
-      updateMarket(
-        marketSelect.value
-      );
+});
 
-
-      dataStatus.textContent =
-        "🟢 Market data loaded successfully from data/market-data.json";
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      dataStatus.textContent =
-        "🔴 Could not load market-data.json. Check the data file.";
-
-      analysisText.textContent =
-        "The demonstration data could not be loaded. Please check that data/market-data.json exists in the GHOST_FX repository.";
-
-    }
-
-  }
-
-
-  marketSelect.addEventListener(
-    "change",
-    function () {
-
-      updateMarket(
-        this.value
-      );
-
-    }
-  );
-
-
-  cards.forEach(card => {
-
-    card.addEventListener(
-      "click",
-      function () {
-
-        const market =
-          this.dataset.market;
-
-        marketSelect.value =
-          market;
-
-        updateMarket(
-          market
-        );
-
-      }
-    );
-
-  });
-
-
-  document.querySelectorAll(".timeframe")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        function () {
-
-          document
-            .querySelectorAll(".timeframe")
-            .forEach(item =>
-              item.classList.remove("active")
-            );
-
-          this.classList.add("active");
-
-        }
-
-      );
-
-    });
-
-
-  loadMarketData();
+});
 
 </script>
 
