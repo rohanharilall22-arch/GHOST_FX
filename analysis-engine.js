@@ -1,411 +1,360 @@
 /*
-  GHOST_FX EDUCATIONAL ANALYSIS ENGINE
+GHOST_FX EDUCATIONAL ANALYSIS ENGINE
 
-  This engine calculates technical-analysis reference
-  information from OHLC candle data.
+Purpose:
+- Analyze OHLC market candles
+- Calculate reference support/resistance
+- Calculate trend, momentum and volatility
+- Receive data from the GHOST_FX market-data connector
 
-  It does NOT place trades.
-  It does NOT connect to a broker.
-  Results are educational and should not be treated
-  as financial advice.
+This engine does NOT:
+- Place trades
+- Connect to brokers
+- Execute BUY/SELL orders
+- Provide personalized financial advice
+
+Educational market analysis only.
 */
 
 
-// ----------------------------------------
+// ============================================
 // SIMPLE MOVING AVERAGE
-// ----------------------------------------
+// ============================================
 
 function movingAverage(values, period) {
 
-  if (values.length < period) {
-    return null;
-  }
+    if (!Array.isArray(values) || values.length < period) {
+        return null;
+    }
 
-  const recent =
-    values.slice(values.length - period);
+    const recent = values.slice(values.length - period);
 
-  const total =
-    recent.reduce(
-      (sum, value) => sum + value,
-      0
+    const total = recent.reduce(
+        (sum, value) => sum + Number(value),
+        0
     );
 
-  return total / period;
+    return total / period;
 }
 
 
-// ----------------------------------------
-// SUPPORT LEVEL
-// ----------------------------------------
+// ============================================
+// SUPPORT
+// ============================================
 
 function calculateSupport(candles) {
 
-  if (!candles || candles.length === 0) {
-    return null;
-  }
+    if (!candles || candles.length === 0) {
+        return null;
+    }
 
-  const lows =
-    candles.map(candle => candle.low);
+    const lows = candles.map(candle => Number(candle.low));
 
-  return Math.min(...lows);
+    return Math.min(...lows);
 }
 
 
-// ----------------------------------------
-// RESISTANCE LEVEL
-// ----------------------------------------
+// ============================================
+// RESISTANCE
+// ============================================
 
 function calculateResistance(candles) {
 
-  if (!candles || candles.length === 0) {
-    return null;
-  }
+    if (!candles || candles.length === 0) {
+        return null;
+    }
 
-  const highs =
-    candles.map(candle => candle.high);
+    const highs = candles.map(candle => Number(candle.high));
 
-  return Math.max(...highs);
+    return Math.max(...highs);
 }
 
 
-// ----------------------------------------
-// SECOND SUPPORT
-// ----------------------------------------
+// ============================================
+// SECONDARY SUPPORT
+// ============================================
 
 function calculateSupport2(candles) {
 
-  if (candles.length < 5) {
-    return null;
-  }
+    if (!candles || candles.length < 2) {
+        return null;
+    }
 
-  const sorted =
-    candles
-      .map(candle => candle.low)
-      .sort((a, b) => a - b);
+    const sorted = candles
+        .map(candle => Number(candle.low))
+        .sort((a, b) => a - b);
 
-  return sorted[
-    Math.floor(sorted.length * 0.25)
-  ];
+    return sorted[Math.min(1, sorted.length - 1)];
 }
 
 
-// ----------------------------------------
-// SECOND RESISTANCE
-// ----------------------------------------
+// ============================================
+// SECONDARY RESISTANCE
+// ============================================
 
 function calculateResistance2(candles) {
 
-  if (candles.length < 5) {
-    return null;
-  }
+    if (!candles || candles.length < 2) {
+        return null;
+    }
 
-  const sorted =
-    candles
-      .map(candle => candle.high)
-      .sort((a, b) => b - a);
+    const sorted = candles
+        .map(candle => Number(candle.high))
+        .sort((a, b) => b - a);
 
-  return sorted[
-    Math.floor(sorted.length * 0.25)
-  ];
+    return sorted[Math.min(1, sorted.length - 1)];
 }
 
 
-// ----------------------------------------
+// ============================================
 // TREND
-// ----------------------------------------
+// ============================================
 
 function calculateTrend(candles) {
 
-  if (candles.length < 20) {
+    if (!candles || candles.length < 20) {
+        return {
+            score: 50,
+            label: "Insufficient data — Demo"
+        };
+    }
+
+    const closes = candles.map(candle => Number(candle.close));
+
+    const shortMA = movingAverage(closes, 10);
+    const longMA = movingAverage(closes, 20);
+
+    if (shortMA === null || longMA === null) {
+        return {
+            score: 50,
+            label: "Insufficient data — Demo"
+        };
+    }
+
+    const difference = ((shortMA - longMA) / longMA) * 100;
+
+    let score = 50;
+    let label = "Neutral — Educational";
+
+    if (difference > 0.20) {
+        score = 65;
+        label = "Upward conditions — Educational";
+    } else if (difference < -0.20) {
+        score = 35;
+        label = "Downward conditions — Educational";
+    } else {
+        score = 50;
+        label = "Neutral conditions — Educational";
+    }
 
     return {
-      score: 50,
-      label: "Insufficient data"
+        score,
+        label
     };
-
-  }
-
-  const closes =
-    candles.map(
-      candle => candle.close
-    );
-
-  const shortMA =
-    movingAverage(closes, 10);
-
-  const longMA =
-    movingAverage(closes, 20);
-
-  if (
-    shortMA === null ||
-    longMA === null
-  ) {
-
-    return {
-      score: 50,
-      label: "Neutral"
-    };
-
-  }
-
-  const difference =
-    ((shortMA - longMA) / longMA) * 100;
-
-  let score = 50;
-
-  if (difference > 1) {
-    score = 75;
-  } else if (difference > 0.3) {
-    score = 62;
-  } else if (difference < -1) {
-    score = 25;
-  } else if (difference < -0.3) {
-    score = 38;
-  }
-
-  let label =
-    "Neutral";
-
-  if (score >= 70) {
-    label =
-      "Stronger upward trend";
-  }
-
-  if (
-    score >= 55 &&
-    score < 70
-  ) {
-    label =
-      "Mild upward trend";
-  }
-
-  if (
-    score <= 30
-  ) {
-    label =
-      "Stronger downward trend";
-  }
-
-  if (
-    score > 30 &&
-    score < 45
-  ) {
-    label =
-      "Mild downward trend";
-  }
-
-  return {
-    score: score,
-    label: label
-  };
-
 }
 
 
-// ----------------------------------------
+// ============================================
 // MOMENTUM
-// ----------------------------------------
+// ============================================
 
 function calculateMomentum(candles) {
 
-  if (candles.length < 10) {
+    if (!candles || candles.length < 10) {
+        return {
+            score: 50,
+            label: "Insufficient data — Demo"
+        };
+    }
+
+    const closes = candles.map(candle => Number(candle.close));
+
+    const current = closes[closes.length - 1];
+    const previous = closes[closes.length - 10];
+
+    if (!Number.isFinite(current) || !Number.isFinite(previous)) {
+        return {
+            score: 50,
+            label: "Insufficient data — Demo"
+        };
+    }
+
+    const change = ((current - previous) / previous) * 100;
+
+    let score = 50;
+    let label = "Neutral momentum — Educational";
+
+    if (change > 0.30) {
+        score = 65;
+        label = "Positive momentum — Educational";
+    } else if (change < -0.30) {
+        score = 35;
+        label = "Negative momentum — Educational";
+    }
 
     return {
-      score: 50,
-      label: "Insufficient data"
+        score,
+        label
     };
-
-  }
-
-  const closes =
-    candles.map(
-      candle => candle.close
-    );
-
-  const current =
-    closes[closes.length - 1];
-
-  const previous =
-    closes[closes.length - 10];
-
-  const change =
-    ((current - previous) / previous) * 100;
-
-  let score =
-    50 + change * 10;
-
-  score =
-    Math.max(
-      0,
-      Math.min(100, score)
-    );
-
-  let label =
-    "Moderate";
-
-  if (score >= 70) {
-    label =
-      "Strong";
-  }
-
-  if (score <= 30) {
-    label =
-      "Weak";
-  }
-
-  return {
-    score: Math.round(score),
-    label: label
-  };
-
 }
 
 
-// ----------------------------------------
+// ============================================
 // VOLATILITY
-// ----------------------------------------
+// ============================================
 
 function calculateVolatility(candles) {
 
-  if (candles.length === 0) {
+    if (!candles || candles.length === 0) {
+        return {
+            score: 50,
+            label: "Insufficient data — Demo"
+        };
+    }
+
+    const ranges = candles.map(candle => {
+
+        const high = Number(candle.high);
+        const low = Number(candle.low);
+        const close = Number(candle.close);
+
+        if (!Number.isFinite(high) ||
+            !Number.isFinite(low) ||
+            !Number.isFinite(close) ||
+            close === 0) {
+            return 0;
+        }
+
+        return ((high - low) / close) * 100;
+    });
+
+    const averageRange =
+        ranges.reduce((sum, value) => sum + value, 0)
+        / ranges.length;
+
+    let score = Math.min(
+        100,
+        Math.max(0, averageRange * 100)
+    );
+
+    let label = "Moderate volatility — Educational";
+
+    if (score < 30) {
+        label = "Lower volatility — Educational";
+    }
+
+    if (score > 70) {
+        label = "Higher volatility — Educational";
+    }
 
     return {
-      score: 0,
-      label: "No data"
+        score: Math.round(score),
+        label
     };
-
-  }
-
-  const ranges =
-    candles.map(
-      candle =>
-        (
-          (candle.high - candle.low)
-          /
-          candle.close
-        ) * 100
-    );
-
-  const averageRange =
-    ranges.reduce(
-      (sum, value) =>
-        sum + value,
-      0
-    ) / ranges.length;
-
-  let score =
-    averageRange * 20;
-
-  score =
-    Math.max(
-      0,
-      Math.min(100, score)
-    );
-
-  let label =
-    "Low";
-
-  if (score >= 65) {
-    label =
-      "High";
-  } else if (score >= 35) {
-    label =
-      "Moderate";
-  }
-
-  return {
-    score: Math.round(score),
-    label: label
-  };
-
 }
 
 
-// ----------------------------------------
-// COMPLETE ANALYSIS
-// ----------------------------------------
+// ============================================
+// COMPLETE MARKET ANALYSIS
+// ============================================
 
 function analyzeMarket(candles) {
 
-  if (
-    !Array.isArray(candles) ||
-    candles.length === 0
-  ) {
+    if (!Array.isArray(candles) || candles.length === 0) {
+
+        return {
+            status: "No market data",
+            educational: true
+        };
+    }
+
+    const validCandles = candles.filter(candle =>
+        Number.isFinite(Number(candle.open)) &&
+        Number.isFinite(Number(candle.high)) &&
+        Number.isFinite(Number(candle.low)) &&
+        Number.isFinite(Number(candle.close))
+    );
+
+    if (validCandles.length === 0) {
+
+        return {
+            status: "Invalid market data",
+            educational: true
+        };
+    }
+
+    const latest =
+        validCandles[validCandles.length - 1];
+
+    const support =
+        calculateSupport(validCandles);
+
+    const resistance =
+        calculateResistance(validCandles);
+
+    const support2 =
+        calculateSupport2(validCandles);
+
+    const resistance2 =
+        calculateResistance2(validCandles);
+
+    const trend =
+        calculateTrend(validCandles);
+
+    const momentum =
+        calculateMomentum(validCandles);
+
+    const volatility =
+        calculateVolatility(validCandles);
+
 
     return {
-      error:
-        "No candle data available."
+
+        status: "Analysis complete",
+
+        educational: true,
+
+        lastPrice: Number(latest.close),
+
+        support: support,
+        support2: support2,
+
+        resistance: resistance,
+        resistance2: resistance2,
+
+        trend: trend,
+
+        momentum: momentum,
+
+        volatility: volatility,
+
+        candleCount: validCandles.length,
+
+        disclaimer:
+            "Educational market-data analysis only. " +
+            "This does not constitute financial advice " +
+            "and does not execute trades."
     };
-
-  }
-
-
-  const support =
-    calculateSupport(candles);
-
-  const support2 =
-    calculateSupport2(candles);
-
-  const resistance =
-    calculateResistance(candles);
-
-  const resistance2 =
-    calculateResistance2(candles);
-
-  const trend =
-    calculateTrend(candles);
-
-  const momentum =
-    calculateMomentum(candles);
-
-  const volatility =
-    calculateVolatility(candles);
-
-
-  let condition =
-    "Neutral conditions";
-
-
-  if (
-    trend.score >= 65 &&
-    momentum.score >= 60
-  ) {
-
-    condition =
-      "Upward conditions detected";
-
-  } else if (
-    trend.score <= 35 &&
-    momentum.score <= 40
-  ) {
-
-    condition =
-      "Downward conditions detected";
-
-  }
-
-
-  return {
-
-    support: support,
-
-    support2: support2,
-
-    resistance: resistance,
-
-    resistance2: resistance2,
-
-    trend: trend,
-
-    momentum: momentum,
-
-    volatility: volatility,
-
-    condition: condition,
-
-    educationalNotice:
-      "These calculations describe market conditions for educational purposes. They are not guaranteed predictions or personalized trading instructions."
-
-  };
-
 }
+
+
+// ============================================
+// GHOST_FX GLOBAL ENGINE
+// ============================================
+
+window.GHOSTFXAnalysisEngine = {
+
+    movingAverage,
+
+    calculateSupport,
+    calculateResistance,
+
+    calculateSupport2,
+    calculateResistance2,
+
+    calculateTrend,
+    calculateMomentum,
+    calculateVolatility,
+
+    analyzeMarket
+};
