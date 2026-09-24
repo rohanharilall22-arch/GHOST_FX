@@ -1,6 +1,9 @@
-// GHOST_FX Market Data Connector
+// GHOST_FX MARKET DATA CONNECTOR
 // Educational market-data connection only.
-// No trade execution or broker connection.
+// No broker connection or trade execution.
+
+// Working GHOST_FX Vercel backend
+const API_BASE_URL = "https://ghost-goblsyo1k-rohanharilall22-arch.vercel.app";
 
 const MARKET_SYMBOLS = {
     "XAU/USD": "XAUUSD",
@@ -9,13 +12,12 @@ const MARKET_SYMBOLS = {
     "USD/JPY": "USDJPY"
 };
 
-/*
-  This function is designed to receive OHLC candle data
-  from a secure backend/data provider.
-
-  IMPORTANT:
-  Never put a private API key inside this GitHub frontend.
-*/
+const ALLOWED_INTERVALS = {
+    "15m": "15m",
+    "1h": "1h",
+    "4h": "4h",
+    "1d": "1d"
+};
 
 function normalizeCandles(rawCandles) {
     if (!Array.isArray(rawCandles)) {
@@ -41,39 +43,41 @@ function normalizeCandles(rawCandles) {
 
 async function getMarketData(symbol, interval = "1h") {
     const providerSymbol = MARKET_SYMBOLS[symbol];
+    const providerInterval = ALLOWED_INTERVALS[interval];
 
     if (!providerSymbol) {
         throw new Error("Unsupported market symbol.");
     }
 
-    /*
-      The dashboard will eventually call your secure backend here.
-
-      Example:
-      /api/market-data?symbol=XAUUSD&interval=1h
-
-      The API key stays on the backend.
-    */
+    if (!providerInterval) {
+        throw new Error("Unsupported timeframe.");
+    }
 
     const url =
-        `/api/market-data?symbol=${encodeURIComponent(providerSymbol)}` +
-        `&interval=${encodeURIComponent(interval)}`;
+        `${API_BASE_URL}/api/market-data` +
+        `?symbol=${encodeURIComponent(providerSymbol)}` +
+        `&interval=${encodeURIComponent(providerInterval)}`;
 
     const response = await fetch(url);
 
     if (!response.ok) {
-        throw new Error("Market-data server unavailable.");
+        throw new Error(
+            `Market-data server returned HTTP ${response.status}.`
+        );
     }
 
     const data = await response.json();
 
+    if (!Array.isArray(data.candles)) {
+        throw new Error("No candle data was returned.");
+    }
+
     return normalizeCandles(data.candles);
 }
 
-
-// Make the connector available to dashboard.html
 window.GHOSTFXMarketData = {
     getMarketData,
     normalizeCandles,
-    MARKET_SYMBOLS
+    MARKET_SYMBOLS,
+    ALLOWED_INTERVALS
 };
