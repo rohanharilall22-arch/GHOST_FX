@@ -3,7 +3,8 @@
 // No broker connection or trade execution.
 
 // Working GHOST_FX Vercel backend
-const API_BASE_URL = "https://ghost-goblsyo1k-rohanharilall22-arch.vercel.app";
+const API_BASE_URL =
+    "https://ghost-dmoid76gv-rohanharilall22-arch.vercel.app";
 
 const MARKET_SYMBOLS = {
     "XAU/USD": "XAUUSD",
@@ -25,19 +26,20 @@ function normalizeCandles(rawCandles) {
     }
 
     return rawCandles
-        .map(candle => ({
+        .map((candle) => ({
             time: Number(candle.time),
             open: Number(candle.open),
             high: Number(candle.high),
             low: Number(candle.low),
             close: Number(candle.close)
         }))
-        .filter(candle =>
-            Number.isFinite(candle.time) &&
-            Number.isFinite(candle.open) &&
-            Number.isFinite(candle.high) &&
-            Number.isFinite(candle.low) &&
-            Number.isFinite(candle.close)
+        .filter(
+            (candle) =>
+                Number.isFinite(candle.time) &&
+                Number.isFinite(candle.open) &&
+                Number.isFinite(candle.high) &&
+                Number.isFinite(candle.low) &&
+                Number.isFinite(candle.close)
         );
 }
 
@@ -69,15 +71,17 @@ async function getMarketData(symbol, interval = "1h") {
     const data = await response.json();
 
     if (!Array.isArray(data.candles)) {
-        throw new Error("No candle data was returned.");
+        throw new Error("No market candle data was returned.");
     }
 
     return normalizeCandles(data.candles);
 }
 
+// Make the connector available to the GHOST_FX dashboard
 window.GHOSTFXMarketData = {
     getMarketData,
     normalizeCandles,
     MARKET_SYMBOLS,
-    ALLOWED_INTERVALS
+    ALLOWED_INTERVALS,
+    API_BASE_URL
 };
