@@ -1,1120 +1,1088 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>GHOST_FX — AI Market Dashboard</title>
+<title>GHOST_FX — Market Analysis</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, #29105f 0%, #090512 42%, #050509 100%);
-      color: white;
-      min-height: 100vh;
-    }
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top, #171b55 0%, #08091d 45%, #05060f 100%);
+    color: white;
+    min-height: 100vh;
+}
 
-    button,
-    select,
-    input {
-      font: inherit;
-    }
+nav {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(5,6,20,0.85);
+}
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 6%;
-      background: rgba(5,5,12,.88);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(12px);
-    }
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #8d8cff;
+}
 
-    .logo {
-      font-size: 23px;
-      font-weight: 900;
-      letter-spacing: 2px;
-    }
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
 
-    .logo span {
-      color: #c99cff;
-    }
+.nav-links a {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 14px;
+}
 
-    .nav {
-      display: flex;
-      gap: 18px;
-      align-items: center;
-    }
+.nav-links a:hover {
+    color: white;
+}
 
-    .nav a {
-      color: #ddd;
-      text-decoration: none;
-      font-size: 14px;
-    }
+.container {
+    width: 92%;
+    max-width: 1450px;
+    margin: 35px auto;
+}
 
-    .nav a:hover {
-      color: white;
-    }
+.header {
+    margin-bottom: 25px;
+}
 
-    .container {
-      width: min(1400px, 92%);
-      margin: 30px auto;
-    }
+.header h1 {
+    font-size: 42px;
+    margin: 0 0 8px;
+}
 
-    .hero {
-      margin-bottom: 25px;
-    }
+.header p {
+    color: #aeb2cc;
+    margin: 0;
+}
 
-    .hero h1 {
-      font-size: clamp(28px, 4vw, 46px);
-      margin-bottom: 8px;
-    }
+.notice {
+    margin: 20px 0;
+    padding: 14px 18px;
+    border: 1px solid rgba(150,140,255,0.35);
+    background: rgba(100,90,255,0.12);
+    border-radius: 12px;
+    color: #d9d8ff;
+    font-size: 14px;
+}
 
-    .hero p {
-      color: #aaa;
-      max-width: 750px;
-      line-height: 1.6;
-    }
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-    .demo-banner {
-      margin-top: 18px;
-      padding: 13px 16px;
-      border: 1px solid rgba(201,156,255,.25);
-      background: rgba(201,156,255,.08);
-      border-radius: 12px;
-      color: #d9c7ff;
-      font-size: 13px;
-    }
+label {
+    color: #aeb2cc;
+    font-size: 13px;
+}
 
-    .market-selector {
-      margin: 25px 0;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
+select,
+button {
+    background: #11142e;
+    color: white;
+    border: 1px solid #34385f;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+}
 
-    .market-selector label {
-      color: #aaa;
-      font-size: 13px;
-    }
+button:hover {
+    background: #1b2050;
+}
 
-    select,
-    input {
-      background: #110b1d;
-      color: white;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 10px;
-      padding: 11px 13px;
-      outline: none;
-    }
+button.active {
+    background: #5149d9;
+    border-color: #7770ff;
+}
 
-    select:focus,
-    input:focus {
-      border-color: #b77cff;
-    }
+.status {
+    margin-left: auto;
+    font-size: 13px;
+    color: #8fe6a9;
+}
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 25px;
-    }
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
 
-    .card {
-      background: rgba(17,11,29,.78);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 15px 40px rgba(0,0,0,.2);
-    }
+.card {
+    background: rgba(18,20,52,0.85);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
 
-    .card-title {
-      color: #aaa;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-    }
+.card-title {
+    color: #aeb2cc;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-    .price {
-      font-size: 25px;
-      font-weight: 800;
-    }
+.metric-value {
+    font-size: 28px;
+    font-weight: 800;
+    margin-top: 8px;
+}
 
-    .small {
-      color: #888;
-      font-size: 12px;
-      margin-top: 7px;
+.metric-small {
+    color: #8f94b5;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.chart-card {
+    min-height: 520px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.chart-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.chart-symbol {
+    color: #999cff;
+    font-weight: bold;
+}
+
+canvas {
+    width: 100%;
+    height: 420px;
+    display: block;
+    background:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 50px 50px;
+    border-radius: 10px;
+}
+
+.chart-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    color: #9095b5;
+    font-size: 12px;
+}
+
+.analysis-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.analysis-box {
+    background: rgba(18,20,52,0.85);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.analysis-box h3 {
+    margin: 0 0 12px;
+    font-size: 17px;
+}
+
+.analysis-text {
+    color: #b8bdd7;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.levels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.level {
+    padding: 15px;
+    border-radius: 10px;
+    background: #10132e;
+}
+
+.level span {
+    display: block;
+    color: #8f94b5;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.level strong {
+    display: block;
+    margin-top: 7px;
+    font-size: 20px;
+}
+
+.support {
+    border-left: 3px solid #5fe09b;
+}
+
+.resistance {
+    border-left: 3px solid #ff6f91;
+}
+
+.indicators {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.indicator {
+    background: #10132e;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.indicator-name {
+    color: #8f94b5;
+    font-size: 11px;
+}
+
+.indicator-value {
+    margin-top: 7px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.loading {
+    color: #aaa;
+}
+
+.error {
+    color: #ff8d9f;
+}
+
+.footer {
+    text-align: center;
+    color: #656a89;
+    padding: 40px 0;
+    font-size: 12px;
+}
+
+@media(max-width: 950px) {
+    .metrics {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .main-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
-      gap: 20px;
-      align-items: start;
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+    .metrics {
+        grid-template-columns: 1fr;
     }
 
-    .panel {
-      background: rgba(12,9,20,.88);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 18px 45px rgba(0,0,0,.25);
+    .indicators {
+        grid-template-columns: 1fr;
     }
 
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 17px;
-    }
-
-    .panel-header h2 {
-      font-size: 18px;
+    .header h1 {
+        font-size: 30px;
     }
 
     .status {
-      color: #aaa;
-      font-size: 12px;
+        width: 100%;
+        margin-left: 0;
     }
-
-    .chart {
-      width: 100%;
-      height: 470px;
-      overflow: hidden;
-      border-radius: 14px;
-      background: #050509;
-    }
-
-    .timeframes {
-      display: flex;
-      gap: 8px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .timeframes button,
-    .action-btn {
-      border: 1px solid rgba(255,255,255,.12);
-      background: #151020;
-      color: #ccc;
-      border-radius: 9px;
-      padding: 9px 14px;
-      cursor: pointer;
-    }
-
-    .timeframes button:hover,
-    .timeframes button.active {
-      background: #9b62e8;
-      color: white;
-      border-color: #b77cff;
-    }
-
-    .analysis-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .metric {
-      background: rgba(255,255,255,.035);
-      border: 1px solid rgba(255,255,255,.06);
-      padding: 15px;
-      border-radius: 12px;
-    }
-
-    .metric-title {
-      color: #888;
-      font-size: 11px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .metric-value {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .analysis-text {
-      color: #bbb;
-      line-height: 1.65;
-      font-size: 14px;
-      margin-top: 18px;
-    }
-
-    .trade-box {
-      display: grid;
-      gap: 13px;
-    }
-
-    .trade-balance {
-      padding: 15px;
-      border-radius: 12px;
-      background: rgba(201,156,255,.08);
-      border: 1px solid rgba(201,156,255,.16);
-    }
-
-    .balance-label {
-      color: #999;
-      font-size: 12px;
-    }
-
-    .balance {
-      font-size: 27px;
-      font-weight: 800;
-      margin-top: 5px;
-    }
-
-    .trade-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .trade-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .buy {
-      background: #163d2b !important;
-      border-color: #26744d !important;
-      color: #9ff0c1 !important;
-    }
-
-    .sell {
-      background: #421d27 !important;
-      border-color: #7b3344 !important;
-      color: #ffb3c2 !important;
-    }
-
-    .positions {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 550px;
-    }
-
-    th,
-    td {
-      padding: 11px 8px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-      font-size: 12px;
-    }
-
-    th {
-      color: #888;
-      font-weight: 500;
-    }
-
-    .empty {
-      color: #777;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .close-btn {
-      background: #17111f;
-      border: 1px solid rgba(255,255,255,.1);
-      color: #bbb;
-      padding: 6px 9px;
-      border-radius: 7px;
-      cursor: pointer;
-    }
-
-    .watchlist {
-      display: grid;
-      gap: 9px;
-    }
-
-    .watch-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px;
-      background: rgba(255,255,255,.035);
-      border-radius: 10px;
-      color: #ddd;
-    }
-
-    .footer {
-      text-align: center;
-      color: #666;
-      font-size: 12px;
-      padding: 35px 10px;
-    }
-
-    @media (max-width: 1000px) {
-      .cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .topbar {
-        padding: 15px 4%;
-      }
-
-      .nav {
-        gap: 10px;
-      }
-
-      .nav a {
-        font-size: 12px;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      .analysis-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .chart {
-        height: 380px;
-      }
-
-      .trade-row {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-  <header class="topbar">
-    <div class="logo">GHOST_<span>FX</span></div>
-
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="settings.html">Settings</a>
-    </nav>
-  </header>
-
-  <main class="container">
-
-    <section class="hero">
-      <h1>Market Analysis Dashboard</h1>
-      <p>
-        Interactive market charts and an educational trading simulator
-        inside the GHOST_FX workspace.
-      </p>
-
-      <div class="demo-banner">
-        ⚠️ DEMO MODE — The trading panel uses virtual funds only.
-        No real orders are sent to a broker.
-      </div>
-    </section>
-
-    <section class="market-selector">
-      <label for="marketSelect">MARKET</label>
-
-      <select id="marketSelect" onchange="changeMarket()">
-        <option value="OANDA:XAUUSD">XAU/USD — Gold</option>
-        <option value="OANDA:EURUSD">EUR/USD</option>
-        <option value="OANDA:GBPUSD">GBP/USD</option>
-        <option value="OANDA:USDJPY">USD/JPY</option>
-      </select>
-
-      <span class="status">
-        Interactive chart powered by TradingView
-      </span>
-    </section>
-
-    <section class="cards">
-
-      <div class="card">
-        <div class="card-title">Selected Market</div>
-        <div class="price" id="marketName">XAU/USD</div>
-        <div class="small">Demo analysis</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Trend</div>
-        <div class="price" id="trendValue">65%</div>
-        <div class="small">Educational indicator</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Momentum</div>
-        <div class="price" id="momentumValue">58%</div>
-        <div class="small">Educational indicator</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Volatility</div>
-        <div class="price" id="volatilityValue">45%</div>
-        <div class="small">Educational indicator</div>
-      </div>
-
-    </section>
-
-    <div class="main-grid">
-
-      <!-- LEFT -->
-      <div>
-
-        <section class="panel">
-
-          <div class="panel-header">
-            <h2>Live Market Chart</h2>
-            <span class="status">TradingView</span>
-          </div>
-
-          <div class="chart">
-
-            <div
-              class="tradingview-widget-container"
-              style="height:100%;width:100%;"
-            >
-
-              <div
-                class="tradingview-widget-container__widget"
-                style="height:calc(100% - 32px);width:100%;"
-              ></div>
-
-              <div class="tradingview-widget-copyright">
-                <a
-                  href="https://www.tradingview.com/"
-                  target="_blank"
-                  rel="noopener nofollow"
-                >
-                  TradingView
-                </a>
-              </div>
-
-              <script
-                type="text/javascript"
-                src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
-                async
-              >
-              {
-                "autosize": true,
-                "symbol": "OANDA:XAUUSD",
-                "interval": "60",
-                "timezone": "exchange",
-                "theme": "dark",
-                "backgroundColor": "rgba(0,0,0,0)",
-                "style": "1",
-                "hide_top_toolbar": false,
-                "withdateranges": true,
-                "allow_symbol_change": true,
-                "save_image": false,
-                "calendar": false,
-                "support_host": "https://www.tradingview.com"
-              }
-              </script>
-
-            </div>
-
-          </div>
-
-          <div class="timeframes">
-            <button onclick="setTimeframe('15')" id="tf15">15M</button>
-            <button onclick="setTimeframe('60')" id="tf60" class="active">1H</button>
-            <button onclick="setTimeframe('240')" id="tf240">4H</button>
-            <button onclick="setTimeframe('D')" id="tfD">1D</button>
-          </div>
-
-        </section>
-
-
-        <section class="panel">
-
-          <div class="panel-header">
-            <h2>AI Analysis Engine</h2>
-            <span class="status">Educational Demo</span>
-          </div>
-
-          <div class="analysis-grid">
-
-            <div class="metric">
-              <div class="metric-title">Trend</div>
-              <div class="metric-value" id="trendText">
-                Neutral — Demo
-              </div>
-            </div>
-
-            <div class="metric">
-              <div class="metric-title">Momentum</div>
-              <div class="metric-value" id="momentumText">
-                Moderate — Demo
-              </div>
-            </div>
-
-            <div class="metric">
-              <div class="metric-title">Volatility</div>
-              <div class="metric-value" id="volatilityText">
-                Moderate — Demo
-              </div>
-            </div>
-
-          </div>
-
-          <p class="analysis-text" id="analysisText">
-            GHOST_FX is displaying an educational market overview.
-            This information is for learning and research purposes and
-            is not a personalized financial recommendation.
-          </p>
-
-        </section>
-
-
-        <section class="panel">
-
-          <div class="panel-header">
-            <h2>Demo Positions</h2>
-            <span class="status">Virtual account</span>
-          </div>
-
-          <div class="positions">
-
-            <table>
-
-              <thead>
-                <tr>
-                  <th>Market</th>
-                  <th>Side</th>
-                  <th>Size</th>
-                  <th>Entry</th>
-                  <th>Current</th>
-                  <th>P/L</th>
-                  <th></th>
-                </tr>
-              </thead>
-
-              <tbody id="positionsBody">
-
-                <tr id="emptyRow">
-                  <td colspan="7" class="empty">
-                    No demo positions open.
-                  </td>
-                </tr>
-
-              </tbody>
-
-            </table>
-
-          </div>
-
-        </section>
-
-      </div>
-
-
-      <!-- RIGHT -->
-      <aside>
-
-        <section class="panel">
-
-          <div class="panel-header">
-            <h2>Demo Trading</h2>
-            <span class="status">SIMULATION</span>
-          </div>
-
-          <div class="trade-box">
-
-            <div class="trade-balance">
-              <div class="balance-label">
-                Virtual account balance
-              </div>
-
-              <div class="balance" id="balance">
-                R100,000.00
-              </div>
-            </div>
-
-            <div>
-              <label class="small">Market</label>
-
-              <input
-                id="tradeMarket"
-                type="text"
-                value="XAU/USD"
-                readonly
-                style="width:100%;margin-top:6px;"
-              >
-            </div>
-
-            <div>
-              <label class="small">Position size</label>
-
-              <input
-                id="tradeSize"
-                type="number"
-                value="1"
-                min="0.01"
-                step="0.01"
-                style="width:100%;margin-top:6px;"
-              >
-            </div>
-
-            <div class="trade-row">
-
-              <div>
-                <label class="small">Demo Stop Loss</label>
-
-                <input
-                  id="stopLoss"
-                  type="number"
-                  placeholder="Optional"
-                  style="width:100%;margin-top:6px;"
-                >
-              </div>
-
-              <div>
-                <label class="small">Demo Take Profit</label>
-
-                <input
-                  id="takeProfit"
-                  type="number"
-                  placeholder="Optional"
-                  style="width:100%;margin-top:6px;"
-                >
-              </div>
-
-            </div>
-
-            <div class="trade-actions">
-
-              <button
-                class="action-btn buy"
-                onclick="openDemoPosition('BUY')"
-              >
-                DEMO BUY
-              </button>
-
-              <button
-                class="action-btn sell"
-                onclick="openDemoPosition('SELL')"
-              >
-                DEMO SELL
-              </button>
-
-            </div>
-
-            <div class="small">
-              These buttons only create virtual positions in this
-              browser. They do not place real trades.
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <section class="panel">
-
-          <div class="panel-header">
-            <h2>Watchlist</h2>
-          </div>
-
-          <div class="watchlist">
-
-            <div class="watch-item">
-              <span>XAU/USD</span>
-              <span>Gold</span>
-            </div>
-
-            <div class="watch-item">
-              <span>EUR/USD</span>
-              <span>Forex</span>
-            </div>
-
-            <div class="watch-item">
-              <span>GBP/USD</span>
-              <span>Forex</span>
-            </div>
-
-            <div class="watch-item">
-              <span>USD/JPY</span>
-              <span>Forex</span>
-            </div>
-
-          </div>
-
-        </section>
-
-      </aside>
+<nav>
+    <div class="logo">GHOST_FX</div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="settings.html">Settings</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Market Analysis Dashboard</h1>
+        <p>
+            Real market-data visualization and educational technical analysis.
+        </p>
+    </div>
+
+    <div class="notice">
+        ⚠️ <strong>EDUCATIONAL MODE</strong> — GHOST_FX displays market data
+        and analytical observations for learning and research. It does not
+        execute trades or send orders to a broker.
+    </div>
+
+    <div class="controls">
+
+        <div>
+            <label>MARKET</label><br>
+            <select id="marketSelect">
+                <option value="XAU/USD">XAU/USD — Gold</option>
+                <option value="EUR/USD">EUR/USD</option>
+                <option value="GBP/USD">GBP/USD</option>
+                <option value="USD/JPY">USD/JPY</option>
+            </select>
+        </div>
+
+        <div>
+            <label>TIMEFRAME</label><br>
+
+            <button class="timeframe active" data-interval="1h">
+                1H
+            </button>
+
+            <button class="timeframe" data-interval="15m">
+                15M
+            </button>
+
+            <button class="timeframe" data-interval="4h">
+                4H
+            </button>
+
+            <button class="timeframe" data-interval="1d">
+                1D
+            </button>
+        </div>
+
+        <div class="status" id="status">
+            Waiting for market data...
+        </div>
 
     </div>
 
-  </main>
+    <div class="metrics">
+
+        <div class="card">
+            <div class="card-title">Market</div>
+            <div class="metric-value" id="marketName">XAU/USD</div>
+            <div class="metric-small">Selected market</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Trend</div>
+            <div class="metric-value" id="trendValue">--</div>
+            <div class="metric-small">Educational indicator</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Momentum</div>
+            <div class="metric-value" id="momentumValue">--</div>
+            <div class="metric-small">Educational indicator</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Volatility</div>
+            <div class="metric-value" id="volatilityValue">--</div>
+            <div class="metric-small">Educational indicator</div>
+        </div>
+
+    </div>
+
+    <div class="main-grid">
+
+        <div class="card chart-card">
+
+            <div class="chart-header">
+                <h2>Market Chart</h2>
+                <div class="chart-symbol" id="chartSymbol">
+                    XAU/USD
+                </div>
+            </div>
+
+            <canvas id="marketChart"></canvas>
+
+            <div class="chart-info">
+                <span id="priceText">Price: --</span>
+                <span id="candleText">Candles: --</span>
+            </div>
+
+        </div>
+
+        <div class="analysis-panel">
+
+            <div class="analysis-box">
+
+                <h3>🧠 Market Analysis</h3>
+
+                <div id="analysisText" class="analysis-text">
+                    Loading market data...
+                </div>
+
+            </div>
+
+            <div class="analysis-box">
+
+                <h3>📍 Key Levels</h3>
+
+                <div class="levels">
+
+                    <div class="level support">
+                        <span>Support</span>
+                        <strong id="supportValue">--</strong>
+                    </div>
+
+                    <div class="level resistance">
+                        <span>Resistance</span>
+                        <strong id="resistanceValue">--</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="analysis-box">
+
+                <h3>📊 Indicators</h3>
+
+                <div class="indicators">
+
+                    <div class="indicator">
+                        <div class="indicator-name">PRICE</div>
+                        <div class="indicator-value" id="priceIndicator">
+                            --
+                        </div>
+                    </div>
+
+                    <div class="indicator">
+                        <div class="indicator-name">MA 20</div>
+                        <div class="indicator-value" id="maIndicator">
+                            --
+                        </div>
+                    </div>
+
+                    <div class="indicator">
+                        <div class="indicator-name">STATE</div>
+                        <div class="indicator-value" id="stateIndicator">
+                            --
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 GHOST_FX — Educational market-analysis software.
+    </div>
+
+</div>
+
+<script>
+
+const API_BASE_URL =
+"https://ghost-dmold76gv-rohanharilall22-arch.vercel.app";
+
+const marketMap = {
+    "XAU/USD": "XAUUSD",
+    "EUR/USD": "EURUSD",
+    "GBP/USD": "GBPUSD",
+    "USD/JPY": "USDJPY"
+};
+
+let currentMarket = "XAU/USD";
+let currentInterval = "1h";
+let candles = [];
+
+const marketSelect =
+document.getElementById("marketSelect");
+
+const status =
+document.getElementById("status");
+
+const canvas =
+document.getElementById("marketChart");
+
+const ctx =
+canvas.getContext("2d");
 
 
-  <footer class="footer">
+function calculateMA(values, period = 20) {
 
-    <p>
-      GHOST_FX © 2026
-    </p>
-
-    <p style="margin-top:8px;">
-      Educational market-analysis and simulation platform.
-      No real-money trading execution is provided by this demo.
-    </p>
-
-  </footer>
-
-
-  <script>
-
-    const marketData = {
-
-      "OANDA:XAUUSD": {
-        name: "XAU/USD",
-        trend: 65,
-        momentum: 58,
-        volatility: 45,
-        trendText: "Neutral — Demo",
-        momentumText: "Moderate — Demo",
-        volatilityText: "Moderate — Demo"
-      },
-
-      "OANDA:EURUSD": {
-        name: "EUR/USD",
-        trend: 55,
-        momentum: 51,
-        volatility: 32,
-        trendText: "Neutral — Demo",
-        momentumText: "Moderate — Demo",
-        volatilityText: "Low — Demo"
-      },
-
-      "OANDA:GBPUSD": {
-        name: "GBP/USD",
-        trend: 61,
-        momentum: 63,
-        volatility: 49,
-        trendText: "Moderate — Demo",
-        momentumText: "Moderate — Demo",
-        volatilityText: "Moderate — Demo"
-      },
-
-      "OANDA:USDJPY": {
-        name: "USD/JPY",
-        trend: 57,
-        momentum: 55,
-        volatility: 42,
-        trendText: "Neutral — Demo",
-        momentumText: "Moderate — Demo",
-        volatilityText: "Moderate — Demo"
-      }
-
-    };
-
-
-    let selectedMarket = "OANDA:XAUUSD";
-
-    let virtualBalance = 100000;
-
-    let positions = [];
-
-
-    function changeMarket() {
-
-      const select = document.getElementById("marketSelect");
-
-      selectedMarket = select.value;
-
-      updateDashboard();
-
-      /*
-        The TradingView widget allows symbol changes directly
-        inside the chart. The selected market label and simulator
-        are updated here as well.
-      */
-
+    if (values.length < period) {
+        return null;
     }
 
+    const recent =
+        values.slice(values.length - period);
 
-    function updateDashboard() {
+    return recent.reduce(
+        (sum, value) => sum + value,
+        0
+    ) / period;
+}
 
-      const data = marketData[selectedMarket];
 
-      document.getElementById("marketName").textContent =
-        data.name;
+function calculateSupport(data) {
 
-      document.getElementById("tradeMarket").value =
-        data.name;
+    if (!data.length) return null;
 
-      document.getElementById("trendValue").textContent =
-        data.trend + "%";
+    const lows =
+        data.map(c => c.low);
 
-      document.getElementById("momentumValue").textContent =
-        data.momentum + "%";
+    return Math.min(
+        ...lows.slice(-30)
+    );
+}
 
-      document.getElementById("volatilityValue").textContent =
-        data.volatility + "%";
 
-      document.getElementById("trendText").textContent =
-        data.trendText;
+function calculateResistance(data) {
 
-      document.getElementById("momentumText").textContent =
-        data.momentumText;
+    if (!data.length) return null;
 
-      document.getElementById("volatilityText").textContent =
-        data.volatilityText;
+    const highs =
+        data.map(c => c.high);
 
-      document.getElementById("analysisText").textContent =
-        "Educational overview for " + data.name +
-        ". The dashboard is presenting demonstration indicators " +
-        "for learning and research. It is not a personalized " +
-        "financial recommendation.";
+    return Math.max(
+        ...highs.slice(-30)
+    );
+}
 
+
+function calculateTrend(data) {
+
+    if (data.length < 20) {
+        return 50;
     }
 
+    const closes =
+        data.map(c => c.close);
 
-    function setTimeframe(timeframe) {
+    const shortMA =
+        calculateMA(closes, 10);
 
-      document.querySelectorAll(".timeframes button")
-        .forEach(button => {
-          button.classList.remove("active");
-        });
+    const longMA =
+        calculateMA(closes, 20);
 
-      if (timeframe === "15") {
-        document.getElementById("tf15").classList.add("active");
-      }
-
-      if (timeframe === "60") {
-        document.getElementById("tf60").classList.add("active");
-      }
-
-      if (timeframe === "240") {
-        document.getElementById("tf240").classList.add("active");
-      }
-
-      if (timeframe === "D") {
-        document.getElementById("tfD").classList.add("active");
-      }
-
-      alert(
-        "Timeframe selected: " +
-        timeframe +
-        ". Use the TradingView chart controls to change the chart timeframe."
-      );
-
+    if (!shortMA || !longMA) {
+        return 50;
     }
 
+    const difference =
+        ((shortMA - longMA) / longMA) * 100;
 
-    function openDemoPosition(side) {
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            50 + difference * 10
+        )
+    );
+}
 
-      const size =
-        parseFloat(document.getElementById("tradeSize").value);
 
-      if (!size || size <= 0) {
+function calculateMomentum(data) {
 
-        alert("Enter a valid demo position size.");
-
-        return;
-      }
-
-      const data = marketData[selectedMarket];
-
-      const simulatedPrice =
-        getDemoPrice(data.name);
-
-      const position = {
-
-        id: Date.now(),
-
-        market: data.name,
-
-        side: side,
-
-        size: size,
-
-        entry: simulatedPrice,
-
-        current: simulatedPrice
-
-      };
-
-      positions.push(position);
-
-      renderPositions();
-
+    if (data.length < 10) {
+        return 50;
     }
 
+    const current =
+        data[data.length - 1].close;
 
-    function getDemoPrice(market) {
+    const previous =
+        data[data.length - 10].close;
 
-      const prices = {
+    const change =
+        ((current - previous) / previous) * 100;
 
-        "XAU/USD": 2350.00,
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            50 + change * 15
+        )
+    );
+}
 
-        "EUR/USD": 1.0860,
 
-        "GBP/USD": 1.2700,
+function calculateVolatility(data) {
 
-        "USD/JPY": 150.20
-
-      };
-
-      const base = prices[market] || 1;
-
-      const movement =
-        (Math.random() - 0.5) *
-        base *
-        0.002;
-
-      return base + movement;
-
+    if (data.length < 10) {
+        return 0;
     }
 
+    const recent =
+        data.slice(-20);
 
-    function renderPositions() {
+    const returns = [];
 
-      const body =
-        document.getElementById("positionsBody");
+    for (let i = 1; i < recent.length; i++) {
 
-      body.innerHTML = "";
+        const previous =
+            recent[i - 1].close;
 
-      if (positions.length === 0) {
+        const current =
+            recent[i].close;
 
-        body.innerHTML = `
-          <tr>
-            <td colspan="7" class="empty">
-              No demo positions open.
-            </td>
-          </tr>
-        `;
-
-        return;
-      }
-
-
-      positions.forEach(position => {
-
-        const pnl =
-          position.side === "BUY"
-
-            ? (position.current - position.entry)
-              * position.size
-
-            : (position.entry - position.current)
-              * position.size;
-
-
-        const row =
-          document.createElement("tr");
-
-
-        row.innerHTML = `
-
-          <td>${position.market}</td>
-
-          <td>${position.side}</td>
-
-          <td>${position.size}</td>
-
-          <td>${position.entry.toFixed(4)}</td>
-
-          <td>${position.current.toFixed(4)}</td>
-
-          <td>${pnl.toFixed(2)}</td>
-
-          <td>
-            <button
-              class="close-btn"
-              onclick="closePosition(${position.id})"
-            >
-              Close
-            </button>
-          </td>
-
-        `;
-
-
-        body.appendChild(row);
-
-      });
-
-    }
-
-
-    function closePosition(id) {
-
-      positions =
-        positions.filter(position =>
-          position.id !== id
+        returns.push(
+            Math.abs(
+                (current - previous) /
+                previous
+            ) * 100
         );
-
-      renderPositions();
-
     }
 
+    const average =
+        returns.reduce(
+            (a,b) => a + b,
+            0
+        ) / returns.length;
 
-    function updateVirtualPositions() {
+    return Math.min(
+        100,
+        average * 50
+    );
+}
 
-      positions.forEach(position => {
 
-        const movement =
-          (Math.random() - 0.5) *
-          position.entry *
-          0.001;
+function getState(trend, momentum) {
 
-        position.current += movement;
-
-      });
-
-      renderPositions();
-
+    if (trend > 60 && momentum > 55) {
+        return "Positive structure";
     }
 
-
-    function updateBalanceDisplay() {
-
-      document.getElementById("balance")
-        .textContent =
-        "R" +
-        virtualBalance.toLocaleString(
-          "en-ZA",
-          {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-          }
-        );
-
+    if (trend < 40 && momentum < 45) {
+        return "Negative structure";
     }
 
-
-    updateDashboard();
-
-    updateBalanceDisplay();
-
-    renderPositions();
+    return "Mixed / neutral";
+}
 
 
-    setInterval(
-      updateVirtualPositions,
-      3000
+function formatPrice(value) {
+
+    if (value === null ||
+        value === undefined ||
+        !Number.isFinite(value)) {
+        return "--";
+    }
+
+    return value.toFixed(4);
+}
+
+
+function drawChart(data) {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        rect.width * dpr;
+
+    canvas.height =
+        rect.height * dpr;
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
     );
 
-  </script>
+    const width = rect.width;
+    const height = rect.height;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    if (!data.length) {
+        return;
+    }
+
+    const visible =
+        data.slice(-80);
+
+    const prices =
+        visible.map(c => c.close);
+
+    const min =
+        Math.min(...prices);
+
+    const max =
+        Math.max(...prices);
+
+    const range =
+        max - min || 1;
+
+    const padding = 30;
+
+    ctx.beginPath();
+
+    visible.forEach((candle, index) => {
+
+        const x =
+            padding +
+            index *
+            ((width - padding * 2) /
+            (visible.length - 1));
+
+        const y =
+            height -
+            padding -
+            ((candle.close - min) /
+            range) *
+            (height - padding * 2);
+
+        if (index === 0) {
+            ctx.moveTo(x,y);
+        } else {
+            ctx.lineTo(x,y);
+        }
+
+    });
+
+    ctx.strokeStyle = "#8580ff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    const last =
+        visible[visible.length - 1];
+
+    const lastY =
+        height -
+        padding -
+        ((last.close - min) /
+        range) *
+        (height - padding * 2);
+
+    ctx.beginPath();
+
+    ctx.arc(
+        width - padding,
+        lastY,
+        4,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+}
+
+
+function updateAnalysis(data) {
+
+    if (!data.length) {
+        return;
+    }
+
+    const closes =
+        data.map(c => c.close);
+
+    const latest =
+        closes[closes.length - 1];
+
+    const ma20 =
+        calculateMA(closes,20);
+
+    const support =
+        calculateSupport(data);
+
+    const resistance =
+        calculateResistance(data);
+
+    const trend =
+        calculateTrend(data);
+
+    const momentum =
+        calculateMomentum(data);
+
+    const volatility =
+        calculateVolatility(data);
+
+    const state =
+        getState(
+            trend,
+            momentum
+        );
+
+    document.getElementById(
+        "trendValue"
+    ).textContent =
+        Math.round(trend) + "%";
+
+    document.getElementById(
+        "momentumValue"
+    ).textContent =
+        Math.round(momentum) + "%";
+
+    document.getElementById(
+        "volatilityValue"
+    ).textContent =
+        Math.round(volatility) + "%";
+
+    document.getElementById(
+        "supportValue"
+    ).textContent =
+        formatPrice(support);
+
+    document.getElementById(
+        "resistanceValue"
+    ).textContent =
+        formatPrice(resistance);
+
+    document.getElementById(
+        "priceIndicator"
+    ).textContent =
+        formatPrice(latest);
+
+    document.getElementById(
+        "maIndicator"
+    ).textContent =
+        formatPrice(ma20);
+
+    document.getElementById(
+        "stateIndicator"
+    ).textContent =
+        state;
+
+    document.getElementById(
+        "priceText"
+    ).textContent =
+        "Price: " +
+        formatPrice(latest);
+
+    document.getElementById(
+        "candleText"
+    ).textContent =
+        "Candles: " +
+        data.length;
+
+    let explanation =
+        "The current market structure is being evaluated from recent price data. ";
+
+    if (trend > 60) {
+        explanation +=
+            "Recent prices are showing stronger upward structure compared with the selected moving-average baseline. ";
+    } else if (trend < 40) {
+        explanation +=
+            "Recent prices are showing weaker downward structure compared with the selected moving-average baseline. ";
+    } else {
+        explanation +=
+            "The recent structure is mixed and does not show a strong directional difference. ";
+    }
+
+    if (momentum > 60) {
+        explanation +=
+            "Recent momentum is relatively strong. ";
+    } else if (momentum < 40) {
+        explanation +=
+            "Recent momentum is relatively weak. ";
+    } else {
+        explanation +=
+            "Momentum is currently moderate. ";
+    }
+
+    if (volatility > 60) {
+        explanation +=
+            "Price movement has been relatively volatile.";
+    } else if (volatility < 30) {
+        explanation +=
+            "Price movement has been relatively calm.";
+    } else {
+        explanation +=
+            "Price movement is at a moderate volatility level.";
+    }
+
+    document.getElementById(
+        "analysisText"
+    ).textContent =
+        explanation;
+}
+
+
+async function loadMarketData() {
+
+    status.textContent =
+        "Loading market data...";
+
+    status.className =
+        "status";
+
+    try {
+
+        const symbol =
+            marketMap[currentMarket];
+
+        const url =
+            API_BASE_URL +
+            "/api/market-data?symbol=" +
+            encodeURIComponent(symbol) +
+            "&interval=" +
+            encodeURIComponent(currentInterval);
+
+        const response =
+            await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(
+                "Server returned " +
+                response.status
+            );
+        }
+
+        const data =
+            await response.json();
+
+        if (!Array.isArray(data.candles)) {
+            throw new Error(
+                "No candle data returned."
+            );
+        }
+
+        candles =
+            data.candles;
+
+        document.getElementById(
+            "marketName"
+        ).textContent =
+            currentMarket;
+
+        document.getElementById(
+            "chartSymbol"
+        ).textContent =
+            currentMarket;
+
+        drawChart(candles);
+
+        updateAnalysis(candles);
+
+        status.textContent =
+            "● Market data connected";
+
+        status.style.color =
+            "#8fe6a9";
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+            "Market data unavailable";
+
+        status.style.color =
+            "#ff8d9f";
+
+        document.getElementById(
+            "analysisText"
+        ).textContent =
+            "The market-data server could not be reached. Check the Vercel deployment and API configuration.";
+    }
+}
+
+
+marketSelect.addEventListener(
+    "change",
+    function() {
+
+        currentMarket =
+            this.value;
+
+        loadMarketData();
+    }
+);
+
+
+document.querySelectorAll(
+    ".timeframe"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        function() {
+
+            document.querySelectorAll(
+                ".timeframe"
+            ).forEach(btn =>
+                btn.classList.remove("active")
+            );
+
+            this.classList.add("active");
+
+            currentInterval =
+                this.dataset.interval;
+
+            loadMarketData();
+        }
+    );
+
+});
+
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (candles.length) {
+            drawChart(candles);
+        }
+
+    }
+);
+
+
+loadMarketData();
+
+setInterval(
+    loadMarketData,
+    60000
+);
+
+</script>
 
 </body>
 </html>
