@@ -2,8 +2,7 @@
 // Educational market-data connection only.
 // No broker connection or trade execution.
 
-const API_BASE_URL =
-    "https://ghost-dmold76gv-rohanharilall22-arch.vercel.app";
+const API_BASE_URL = "https://ghost-fx-chl.vercel.app";
 
 const MARKET_SYMBOLS = {
     "XAU/USD": "XAUUSD",
@@ -61,14 +60,14 @@ async function getMarketData(symbol, interval = "1h") {
 
     if (!response.ok) {
         throw new Error(
-            `Market data request failed (${response.status}).`
+            `Market-data server returned ${response.status}.`
         );
     }
 
     const data = await response.json();
 
-    if (!Array.isArray(data.candles)) {
-        throw new Error("No market candle data was returned.");
+    if (!data || !Array.isArray(data.candles)) {
+        throw new Error("Market-data response was invalid.");
     }
 
     return normalizeCandles(data.candles);
