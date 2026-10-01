@@ -2,8 +2,7 @@
 // Educational market-data connection only.
 // No broker connection or trade execution.
 
-const API_BASE_URL =
-    "https://ghost-goblsyo1k-rohanharilall22-arch.vercel.app";
+const API_BASE_URL = "https://ghost-fx-chl.vercel.app";
 
 const MARKET_SYMBOLS = {
     "XAU/USD": "XAUUSD",
@@ -42,6 +41,7 @@ function normalizeCandles(rawCandles) {
 }
 
 async function getMarketData(symbol, interval = "1h") {
+
     const providerSymbol = MARKET_SYMBOLS[symbol];
     const providerInterval = ALLOWED_INTERVALS[interval];
 
@@ -58,31 +58,25 @@ async function getMarketData(symbol, interval = "1h") {
         `?symbol=${encodeURIComponent(providerSymbol)}` +
         `&interval=${encodeURIComponent(providerInterval)}`;
 
+    const response = await fetch(url);
+
+    let data;
+
     try {
-        const response = await fetch(url);
-
-        let data;
-
-        try {
-            data = await response.json();
-        } catch {
-            throw new Error(
-                "Market-data server returned an invalid response."
-            );
-        }
-
-        if (!response.ok) {
-            throw new Error(
-                data?.error || "Market-data server unavailable."
-            );
-        }
-
-        return normalizeCandles(data.candles);
-
-    } catch (error) {
-        console.error("GHOST_FX market-data error:", error);
-        throw error;
+        data = await response.json();
+    } catch {
+        throw new Error(
+            "Market-data server returned an invalid response."
+        );
     }
+
+    if (!response.ok) {
+        throw new Error(
+            data?.error || "Market-data server unavailable."
+        );
+    }
+
+    return normalizeCandles(data.candles);
 }
 
 window.GHOSTFXMarketData = {
