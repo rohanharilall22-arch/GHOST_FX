@@ -2,7 +2,7 @@
 // Educational market-data connection only.
 // No broker connection or trade execution.
 
-const API_BASE_URL = "https://ghost-fx-chl.vercel.app";
+const API_BASE_URL = "https://ghost-ejpr8y0y9-rohanharilall22-arch.vercel.app";
 
 const MARKET_SYMBOLS = {
     "XAU/USD": "XAUUSD",
