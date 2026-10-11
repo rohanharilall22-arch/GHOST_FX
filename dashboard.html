@@ -1,1088 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>GHOST_FX — Market Analysis</title>
-
-<style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background:
-        radial-gradient(circle at top, #171b55 0%, #08091d 45%, #05060f 100%);
-    color: white;
-    min-height: 100vh;
-}
-
-nav {
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 5%;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    background: rgba(5,6,20,0.85);
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: #8d8cff;
-}
-
-.nav-links {
-    display: flex;
-    gap: 25px;
-}
-
-.nav-links a {
-    color: #ddd;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.nav-links a:hover {
-    color: white;
-}
-
-.container {
-    width: 92%;
-    max-width: 1450px;
-    margin: 35px auto;
-}
-
-.header {
-    margin-bottom: 25px;
-}
-
-.header h1 {
-    font-size: 42px;
-    margin: 0 0 8px;
-}
-
-.header p {
-    color: #aeb2cc;
-    margin: 0;
-}
-
-.notice {
-    margin: 20px 0;
-    padding: 14px 18px;
-    border: 1px solid rgba(150,140,255,0.35);
-    background: rgba(100,90,255,0.12);
-    border-radius: 12px;
-    color: #d9d8ff;
-    font-size: 14px;
-}
-
-.controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-label {
-    color: #aeb2cc;
-    font-size: 13px;
-}
-
-select,
-button {
-    background: #11142e;
-    color: white;
-    border: 1px solid #34385f;
-    border-radius: 8px;
-    padding: 10px 14px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #1b2050;
-}
-
-button.active {
-    background: #5149d9;
-    border-color: #7770ff;
-}
-
-.status {
-    margin-left: auto;
-    font-size: 13px;
-    color: #8fe6a9;
-}
-
-.metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.card {
-    background: rgba(18,20,52,0.85);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.card-title {
-    color: #aeb2cc;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.metric-value {
-    font-size: 28px;
-    font-weight: 800;
-    margin-top: 8px;
-}
-
-.metric-small {
-    color: #8f94b5;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.main-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-}
-
-.chart-card {
-    min-height: 520px;
-}
-
-.chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.chart-header h2 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.chart-symbol {
-    color: #999cff;
-    font-weight: bold;
-}
-
-canvas {
-    width: 100%;
-    height: 420px;
-    display: block;
-    background:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-    background-size: 50px 50px;
-    border-radius: 10px;
-}
-
-.chart-info {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
-    color: #9095b5;
-    font-size: 12px;
-}
-
-.analysis-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.analysis-box {
-    background: rgba(18,20,52,0.85);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 15px;
-    padding: 20px;
-}
-
-.analysis-box h3 {
-    margin: 0 0 12px;
-    font-size: 17px;
-}
-
-.analysis-text {
-    color: #b8bdd7;
-    line-height: 1.6;
-    font-size: 14px;
-}
-
-.levels {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.level {
-    padding: 15px;
-    border-radius: 10px;
-    background: #10132e;
-}
-
-.level span {
-    display: block;
-    color: #8f94b5;
-    font-size: 11px;
-    text-transform: uppercase;
-}
-
-.level strong {
-    display: block;
-    margin-top: 7px;
-    font-size: 20px;
-}
-
-.support {
-    border-left: 3px solid #5fe09b;
-}
-
-.resistance {
-    border-left: 3px solid #ff6f91;
-}
-
-.indicators {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
-
-.indicator {
-    background: #10132e;
-    padding: 15px;
-    border-radius: 10px;
-}
-
-.indicator-name {
-    color: #8f94b5;
-    font-size: 11px;
-}
-
-.indicator-value {
-    margin-top: 7px;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.loading {
-    color: #aaa;
-}
-
-.error {
-    color: #ff8d9f;
-}
-
-.footer {
-    text-align: center;
-    color: #656a89;
-    padding: 40px 0;
-    font-size: 12px;
-}
-
-@media(max-width: 950px) {
-    .metrics {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .main-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media(max-width: 600px) {
-    .metrics {
-        grid-template-columns: 1fr;
-    }
-
-    .indicators {
-        grid-template-columns: 1fr;
-    }
-
-    .header h1 {
-        font-size: 30px;
-    }
-
-    .status {
-        width: 100%;
-        margin-left: 0;
-    }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GHOST_FX — Market Analysis</title>
+  <style>
+    :root{color-scheme:dark;--bg:#080b20;--panel:#121a42;--panel2:#172451;--line:#2a3975;--text:#f5f7ff;--muted:#b3bfeb;--accent:#8b8cff;--green:#66e3a2;--red:#ff8aab;--yellow:#ffd27a}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:radial-gradient(circle at top,#243e91 0,#10183d 35%,var(--bg) 80%);min-height:100vh}
+    nav{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 4%;border-bottom:1px solid #ffffff1b;background:#080c20d9;position:sticky;top:0;z-index:3}
+    .logo{font-size:22px;font-weight:900;letter-spacing:.8px;color:#a4a6ff}
+    .navlinks{display:flex;gap:20px;flex-wrap:wrap}.navlinks a{color:#e0e5ff;text-decoration:none;font-size:14px}.navlinks a:hover{color:#fff;text-decoration:underline}
+    main{width:min(1440px,94%);margin:28px auto 40px}.heading{margin-bottom:18px}.heading h1{font-size:clamp(28px,4vw,42px);margin:0 0 7px}.heading p{color:var(--muted);margin:0}
+    .notice{padding:13px 16px;border:1px solid #8795ff60;background:#777cff1b;border-radius:12px;color:#e0e4ff;margin:18px 0 22px;font-size:13px;line-height:1.6}
+    .controls{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:18px}.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 7px;font-weight:700;letter-spacing:.6px}.field select,button{background:#101938;color:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font:inherit}.field select{min-width:155px}button{cursor:pointer}button:hover,button:focus-visible{border-color:var(--accent);outline:none}.timeframes{display:flex;gap:7px}.timeframes button.active{background:#514fc4;border-color:#9b9aff}.status{margin-left:auto;font-size:13px;color:var(--yellow);min-width:200px;text-align:right}.status.ok{color:var(--green)}.status.error{color:var(--red)}
+    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.box{background:linear-gradient(145deg,#192651f5,#101735f5);border:1px solid #ffffff17;border-radius:16px;padding:18px;box-shadow:0 14px 34px #00000020;min-width:0}.eyebrow{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700}.metric{font-size:clamp(22px,2.8vw,31px);font-weight:800;margin-top:9px;overflow-wrap:anywhere}.small{font-size:12px;color:#aab5e3;margin-top:6px;line-height:1.5}
+    .main-grid{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(270px,1fr);gap:16px;align-items:start}.chart-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.chart-title h2,.box h2{font-size:18px;margin:0}.symbol{font-weight:800;color:#b5b6ff}.chart-wrap{height:430px;width:100%;position:relative}canvas{width:100%;height:100%;display:block}.chart-footer{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:12px}.side{display:grid;gap:14px}.box p{color:#d3dbff;line-height:1.6;font-size:14px;margin:10px 0 0}.levels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.level{border-radius:10px;padding:13px;background:#0c1430}.level.support{border-left:3px solid var(--green)}.level.resistance{border-left:3px solid var(--red)}.level span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase}.level strong{display:block;margin-top:7px;font-size:19px;overflow-wrap:anywhere}.indicators{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:14px}.indicator{padding:12px 10px;background:#0c1430;border-radius:10px;min-width:0}.indicator span{display:block;color:var(--muted);font-size:10px}.indicator strong{display:block;margin-top:7px;font-size:15px;overflow-wrap:anywhere}.error-detail{color:var(--red)!important;overflow-wrap:anywhere}.footer{text-align:center;color:#8792c4;padding:30px 0 0;font-size:12px}
+    @media(max-width:900px){.main-grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-wrap{height:360px}.status{width:100%;margin-left:0;text-align:left}}
+    @media(max-width:520px){nav{align-items:flex-start;flex-direction:column}.navlinks{gap:14px}.metrics{grid-template-columns:1fr 1fr}.card,.box{padding:14px}.chart-wrap{height:300px}.levels{grid-template-columns:1fr 1fr}.indicators{grid-template-columns:1fr 1fr}}
+  </style>
 </head>
-
 <body>
-
-<nav>
+  <nav>
     <div class="logo">GHOST_FX</div>
-
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="settings.html">Settings</a>
-    </div>
-</nav>
-
-<div class="container">
-
-    <div class="header">
-        <h1>Market Analysis Dashboard</h1>
-        <p>
-            Real market-data visualization and educational technical analysis.
-        </p>
-    </div>
-
-    <div class="notice">
-        ⚠️ <strong>EDUCATIONAL MODE</strong> — GHOST_FX displays market data
-        and analytical observations for learning and research. It does not
-        execute trades or send orders to a broker.
-    </div>
-
-    <div class="controls">
-
-        <div>
-            <label>MARKET</label><br>
-            <select id="marketSelect">
-                <option value="XAU/USD">XAU/USD — Gold</option>
-                <option value="EUR/USD">EUR/USD</option>
-                <option value="GBP/USD">GBP/USD</option>
-                <option value="USD/JPY">USD/JPY</option>
-            </select>
-        </div>
-
-        <div>
-            <label>TIMEFRAME</label><br>
-
-            <button class="timeframe active" data-interval="1h">
-                1H
-            </button>
-
-            <button class="timeframe" data-interval="15m">
-                15M
-            </button>
-
-            <button class="timeframe" data-interval="4h">
-                4H
-            </button>
-
-            <button class="timeframe" data-interval="1d">
-                1D
-            </button>
-        </div>
-
-        <div class="status" id="status">
-            Waiting for market data...
-        </div>
-
-    </div>
-
-    <div class="metrics">
-
-        <div class="card">
-            <div class="card-title">Market</div>
-            <div class="metric-value" id="marketName">XAU/USD</div>
-            <div class="metric-small">Selected market</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Trend</div>
-            <div class="metric-value" id="trendValue">--</div>
-            <div class="metric-small">Educational indicator</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Momentum</div>
-            <div class="metric-value" id="momentumValue">--</div>
-            <div class="metric-small">Educational indicator</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Volatility</div>
-            <div class="metric-value" id="volatilityValue">--</div>
-            <div class="metric-small">Educational indicator</div>
-        </div>
-
-    </div>
-
-    <div class="main-grid">
-
-        <div class="card chart-card">
-
-            <div class="chart-header">
-                <h2>Market Chart</h2>
-                <div class="chart-symbol" id="chartSymbol">
-                    XAU/USD
-                </div>
-            </div>
-
-            <canvas id="marketChart"></canvas>
-
-            <div class="chart-info">
-                <span id="priceText">Price: --</span>
-                <span id="candleText">Candles: --</span>
-            </div>
-
-        </div>
-
-        <div class="analysis-panel">
-
-            <div class="analysis-box">
-
-                <h3>🧠 Market Analysis</h3>
-
-                <div id="analysisText" class="analysis-text">
-                    Loading market data...
-                </div>
-
-            </div>
-
-            <div class="analysis-box">
-
-                <h3>📍 Key Levels</h3>
-
-                <div class="levels">
-
-                    <div class="level support">
-                        <span>Support</span>
-                        <strong id="supportValue">--</strong>
-                    </div>
-
-                    <div class="level resistance">
-                        <span>Resistance</span>
-                        <strong id="resistanceValue">--</strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="analysis-box">
-
-                <h3>📊 Indicators</h3>
-
-                <div class="indicators">
-
-                    <div class="indicator">
-                        <div class="indicator-name">PRICE</div>
-                        <div class="indicator-value" id="priceIndicator">
-                            --
-                        </div>
-                    </div>
-
-                    <div class="indicator">
-                        <div class="indicator-name">MA 20</div>
-                        <div class="indicator-value" id="maIndicator">
-                            --
-                        </div>
-                    </div>
-
-                    <div class="indicator">
-                        <div class="indicator-name">STATE</div>
-                        <div class="indicator-value" id="stateIndicator">
-                            --
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="footer">
-        © 2026 GHOST_FX — Educational market-analysis software.
-    </div>
-
-</div>
-
+    <div class="navlinks"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a><a href="settings.html">Settings</a></div>
+  </nav>
+  <main>
+    <header class="heading"><h1>Market Analysis Dashboard</h1><p>Market data visualisation and educational technical analysis.</p></header>
+    <div class="notice"><strong>⚠ EDUCATIONAL MODE</strong> — Data and indicators are for learning and research only. They are not financial advice, are not guaranteed to be accurate, and GHOST_FX does not execute trades or send orders to a broker.</div>
+    <section class="controls" aria-label="Market controls">
+      <div class="field"><label for="marketSelect">MARKET</label><select id="marketSelect"><option value="XAU/USD">XAU/USD — Gold</option><option value="EUR/USD">EUR/USD</option><option value="GBP/USD">GBP/USD</option><option value="USD/JPY">USD/JPY</option></select></div>
+      <div class="field"><label>TIMEFRAME</label><div class="timeframes"><button type="button" class="tf active" data-interval="1h">1H</button><button type="button" class="tf" data-interval="15m">15M</button><button type="button" class="tf" data-interval="4h">4H</button><button type="button" class="tf" data-interval="1d">1D</button></div></div>
+      <div id="status" class="status" role="status" aria-live="polite">Waiting for market data…</div>
+      <button type="button" id="refreshButton">Refresh data</button>
+    </section>
+    <section class="metrics">
+      <div class="card"><div class="eyebrow">Market</div><div class="metric" id="marketName">XAU/USD</div><div class="small">Selected market</div></div>
+      <div class="card"><div class="eyebrow">Trend</div><div class="metric" id="trendValue">—</div><div class="small">Based on recent moving averages</div></div>
+      <div class="card"><div class="eyebrow">Momentum</div><div class="metric" id="momentumValue">—</div><div class="small">Recent price change</div></div>
+      <div class="card"><div class="eyebrow">Volatility</div><div class="metric" id="volatilityValue">—</div><div class="small">Recent average movement</div></div>
+    </section>
+    <section class="main-grid">
+      <div class="card">
+        <div class="chart-title"><h2>Market Chart</h2><div class="symbol" id="chartSymbol">XAU/USD</div></div>
+        <div class="chart-wrap"><canvas id="marketChart" aria-label="Recent market candle chart"></canvas></div>
+        <div class="chart-footer"><span id="priceText">Latest close: —</span><span id="candleText">Candles: —</span></div>
+      </div>
+      <aside class="side">
+        <div class="box"><h2>Market Analysis</h2><p id="analysisText">Loading market data…</p><p class="small" id="errorDetail"></p></div>
+        <div class="box"><h2>Key Levels</h2><div class="levels"><div class="level support"><span>Recent support</span><strong id="supportValue">—</strong></div><div class="level resistance"><span>Recent resistance</span><strong id="resistanceValue">—</strong></div></div><p class="small">These are simple historical levels calculated from recent candles, not predictions.</p></div>
+        <div class="box"><h2>Indicators</h2><div class="indicators"><div class="indicator"><span>LATEST CLOSE</span><strong id="priceIndicator">—</strong></div><div class="indicator"><span>MA 20</span><strong id="maIndicator">—</strong></div><div class="indicator"><span>STRUCTURE</span><strong id="stateIndicator">—</strong></div></div></div>
+      </aside>
+    </section>
+    <div class="footer">© 2026 GHOST_FX — Educational market-analysis software. No trade execution.</div>
+  </main>
 <script>
+'use strict';
 
-const API_BASE_URL = 
-"https://ghost-ejpr8y0y9-rohanharilall22-arch.vercel.app";
-
-const marketMap = {
-    "XAU/USD": "XAUUSD",
-    "EUR/USD": "EURUSD",
-    "GBP/USD": "GBPUSD",
-    "USD/JPY": "USDJPY"
-};
-
-let currentMarket = "XAU/USD";
-let currentInterval = "1h";
+// This is the Vercel deployment whose API returned candle data in the test.
+// Keep all dashboard requests pointed at this single API base URL.
+const API_BASE_URL = 'https://ghost-ejpr8y0y9-rohanharilall22-arch.vercel.app';
+const MARKET_SYMBOLS = {'XAU/USD':'XAUUSD','EUR/USD':'EURUSD','GBP/USD':'GBPUSD','USD/JPY':'USDJPY'};
+let selectedMarket = 'XAU/USD';
+let selectedInterval = '1h';
 let candles = [];
+const el = id => document.getElementById(id);
+const canvas = el('marketChart');
+const ctx = canvas.getContext('2d');
 
-const marketSelect =
-document.getElementById("marketSelect");
-
-const status =
-document.getElementById("status");
-
-const canvas =
-document.getElementById("marketChart");
-
-const ctx =
-canvas.getContext("2d");
-
-
-function calculateMA(values, period = 20) {
-
-    if (values.length < period) {
-        return null;
-    }
-
-    const recent =
-        values.slice(values.length - period);
-
-    return recent.reduce(
-        (sum, value) => sum + value,
-        0
-    ) / period;
-}
-
-
-function calculateSupport(data) {
-
-    if (!data.length) return null;
-
-    const lows =
-        data.map(c => c.low);
-
-    return Math.min(
-        ...lows.slice(-30)
-    );
-}
-
-
-function calculateResistance(data) {
-
-    if (!data.length) return null;
-
-    const highs =
-        data.map(c => c.high);
-
-    return Math.max(
-        ...highs.slice(-30)
-    );
-}
-
-
-function calculateTrend(data) {
-
-    if (data.length < 20) {
-        return 50;
-    }
-
-    const closes =
-        data.map(c => c.close);
-
-    const shortMA =
-        calculateMA(closes, 10);
-
-    const longMA =
-        calculateMA(closes, 20);
-
-    if (!shortMA || !longMA) {
-        return 50;
-    }
-
-    const difference =
-        ((shortMA - longMA) / longMA) * 100;
-
-    return Math.max(
-        0,
-        Math.min(
-            100,
-            50 + difference * 10
-        )
-    );
-}
-
-
-function calculateMomentum(data) {
-
-    if (data.length < 10) {
-        return 50;
-    }
-
-    const current =
-        data[data.length - 1].close;
-
-    const previous =
-        data[data.length - 10].close;
-
-    const change =
-        ((current - previous) / previous) * 100;
-
-    return Math.max(
-        0,
-        Math.min(
-            100,
-            50 + change * 15
-        )
-    );
-}
-
-
-function calculateVolatility(data) {
-
-    if (data.length < 10) {
-        return 0;
-    }
-
-    const recent =
-        data.slice(-20);
-
-    const returns = [];
-
-    for (let i = 1; i < recent.length; i++) {
-
-        const previous =
-            recent[i - 1].close;
-
-        const current =
-            recent[i].close;
-
-        returns.push(
-            Math.abs(
-                (current - previous) /
-                previous
-            ) * 100
-        );
-    }
-
-    const average =
-        returns.reduce(
-            (a,b) => a + b,
-            0
-        ) / returns.length;
-
-    return Math.min(
-        100,
-        average * 50
-    );
-}
-
-
-function getState(trend, momentum) {
-
-    if (trend > 60 && momentum > 55) {
-        return "Positive structure";
-    }
-
-    if (trend < 40 && momentum < 45) {
-        return "Negative structure";
-    }
-
-    return "Mixed / neutral";
-}
-
-
-function formatPrice(value) {
-
-    if (value === null ||
-        value === undefined ||
-        !Number.isFinite(value)) {
-        return "--";
-    }
-
-    return value.toFixed(4);
-}
-
+function priceDigits() { return selectedMarket === 'XAU/USD' ? 2 : selectedMarket === 'USD/JPY' ? 3 : 5; }
+function price(value) { return Number.isFinite(value) ? value.toFixed(priceDigits()) : '—'; }
+function average(values) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null; }
+function movingAverage(values, count) { return values.length >= count ? average(values.slice(-count)) : null; }
+function setStatus(message, state='') { el('status').textContent = message; el('status').className = `status ${state}`; }
 
 function drawChart(data) {
-
-    const rect =
-        canvas.getBoundingClientRect();
-
-    const dpr =
-        window.devicePixelRatio || 1;
-
-    canvas.width =
-        rect.width * dpr;
-
-    canvas.height =
-        rect.height * dpr;
-
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
-
-    const width = rect.width;
-    const height = rect.height;
-
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-    if (!data.length) {
-        return;
-    }
-
-    const visible =
-        data.slice(-80);
-
-    const prices =
-        visible.map(c => c.close);
-
-    const min =
-        Math.min(...prices);
-
-    const max =
-        Math.max(...prices);
-
-    const range =
-        max - min || 1;
-
-    const padding = 30;
-
-    ctx.beginPath();
-
-    visible.forEach((candle, index) => {
-
-        const x =
-            padding +
-            index *
-            ((width - padding * 2) /
-            (visible.length - 1));
-
-        const y =
-            height -
-            padding -
-            ((candle.close - min) /
-            range) *
-            (height - padding * 2);
-
-        if (index === 0) {
-            ctx.moveTo(x,y);
-        } else {
-            ctx.lineTo(x,y);
-        }
-
-    });
-
-    ctx.strokeStyle = "#8580ff";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    const last =
-        visible[visible.length - 1];
-
-    const lastY =
-        height -
-        padding -
-        ((last.close - min) /
-        range) *
-        (height - padding * 2);
-
-    ctx.beginPath();
-
-    ctx.arc(
-        width - padding,
-        lastY,
-        4,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fillStyle = "#ffffff";
-    ctx.fill();
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const w = rect.width, h = rect.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#0d1535'; ctx.fillRect(0, 0, w, h);
+  const pad = {l:55,r:18,t:18,b:28};
+  ctx.font = '11px Arial'; ctx.lineWidth = 1;
+  for(let i=0;i<=5;i++) {
+    const y = pad.t + (h-pad.t-pad.b)*i/5;
+    ctx.strokeStyle = '#ffffff17'; ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke();
+  }
+  if (!data.length) {
+    ctx.fillStyle = '#bac5f0'; ctx.textAlign = 'center'; ctx.fillText('Waiting for candle data…', w/2, h/2); return;
+  }
+  const visible = data.slice(-60);
+  const lows = visible.map(c=>c.low), highs = visible.map(c=>c.high);
+  const min = Math.min(...lows), max = Math.max(...highs);
+  const range = (max-min) || Math.max(Math.abs(max)*0.001, 1);
+  const plotH = h-pad.t-pad.b, plotW = w-pad.l-pad.r;
+  const yOf = value => pad.t + (max-value)/range*plotH;
+  ctx.fillStyle='#b6c3f3'; ctx.textAlign='right'; ctx.textBaseline='middle';
+  for(let i=0;i<=5;i++) { const v=max-range*i/5; ctx.fillText(price(v), pad.l-8, pad.t+plotH*i/5); }
+  const step = plotW/visible.length, bodyW = Math.max(2, Math.min(10, step*0.62));
+  visible.forEach((c,i)=>{
+    const x=pad.l+step*(i+0.5), up=c.close>=c.open, col=up?'#58d99a':'#ff7898';
+    ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,yOf(c.high));ctx.lineTo(x,yOf(c.low));ctx.stroke();
+    const y1=yOf(c.open),y2=yOf(c.close), bh=Math.max(1.5,Math.abs(y2-y1));
+    ctx.fillStyle=col;ctx.fillRect(x-bodyW/2,Math.min(y1,y2),bodyW,bh);
+  });
+  const last=visible[visible.length-1];
+  ctx.strokeStyle='#b8b6ff';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(pad.l,yOf(last.close));ctx.lineTo(w-pad.r,yOf(last.close));ctx.stroke();ctx.setLineDash([]);
 }
-
 
 function updateAnalysis(data) {
-
-    if (!data.length) {
-        return;
-    }
-
-    const closes =
-        data.map(c => c.close);
-
-    const latest =
-        closes[closes.length - 1];
-
-    const ma20 =
-        calculateMA(closes,20);
-
-    const support =
-        calculateSupport(data);
-
-    const resistance =
-        calculateResistance(data);
-
-    const trend =
-        calculateTrend(data);
-
-    const momentum =
-        calculateMomentum(data);
-
-    const volatility =
-        calculateVolatility(data);
-
-    const state =
-        getState(
-            trend,
-            momentum
-        );
-
-    document.getElementById(
-        "trendValue"
-    ).textContent =
-        Math.round(trend) + "%";
-
-    document.getElementById(
-        "momentumValue"
-    ).textContent =
-        Math.round(momentum) + "%";
-
-    document.getElementById(
-        "volatilityValue"
-    ).textContent =
-        Math.round(volatility) + "%";
-
-    document.getElementById(
-        "supportValue"
-    ).textContent =
-        formatPrice(support);
-
-    document.getElementById(
-        "resistanceValue"
-    ).textContent =
-        formatPrice(resistance);
-
-    document.getElementById(
-        "priceIndicator"
-    ).textContent =
-        formatPrice(latest);
-
-    document.getElementById(
-        "maIndicator"
-    ).textContent =
-        formatPrice(ma20);
-
-    document.getElementById(
-        "stateIndicator"
-    ).textContent =
-        state;
-
-    document.getElementById(
-        "priceText"
-    ).textContent =
-        "Price: " +
-        formatPrice(latest);
-
-    document.getElementById(
-        "candleText"
-    ).textContent =
-        "Candles: " +
-        data.length;
-
-    let explanation =
-        "The current market structure is being evaluated from recent price data. ";
-
-    if (trend > 60) {
-        explanation +=
-            "Recent prices are showing stronger upward structure compared with the selected moving-average baseline. ";
-    } else if (trend < 40) {
-        explanation +=
-            "Recent prices are showing weaker downward structure compared with the selected moving-average baseline. ";
-    } else {
-        explanation +=
-            "The recent structure is mixed and does not show a strong directional difference. ";
-    }
-
-    if (momentum > 60) {
-        explanation +=
-            "Recent momentum is relatively strong. ";
-    } else if (momentum < 40) {
-        explanation +=
-            "Recent momentum is relatively weak. ";
-    } else {
-        explanation +=
-            "Momentum is currently moderate. ";
-    }
-
-    if (volatility > 60) {
-        explanation +=
-            "Price movement has been relatively volatile.";
-    } else if (volatility < 30) {
-        explanation +=
-            "Price movement has been relatively calm.";
-    } else {
-        explanation +=
-            "Price movement is at a moderate volatility level.";
-    }
-
-    document.getElementById(
-        "analysisText"
-    ).textContent =
-        explanation;
+  if (!data.length) throw new Error('The API returned no valid candles.');
+  const closes=data.map(c=>c.close), last=data[data.length-1];
+  const ma10=movingAverage(closes,10), ma20=movingAverage(closes,20);
+  const support=Math.min(...data.slice(-30).map(c=>c.low));
+  const resistance=Math.max(...data.slice(-30).map(c=>c.high));
+  const old=closes[Math.max(0,closes.length-10)];
+  const momentumPct=old ? ((last.close-old)/old)*100 : 0;
+  const trend=(ma10===null||ma20===null)?'Not enough data':ma10>ma20?'Upward structure':ma10<ma20?'Downward structure':'Mixed / neutral';
+  const momentum=Math.abs(momentumPct)<0.05?'Low':momentumPct>0?'Positive':'Negative';
+  const moves=[];
+  const recent=data.slice(-20);
+  for(let i=1;i<recent.length;i++){const prev=recent[i-1].close;if(prev) moves.push(Math.abs((recent[i].close-prev)/prev)*100);}
+  const vol=average(moves);
+  const volatility=vol===null?'Not enough data':vol<0.1?'Relatively calm':vol<0.35?'Moderate':'Elevated';
+  el('marketName').textContent=selectedMarket;el('chartSymbol').textContent=selectedMarket;
+  el('trendValue').textContent=trend;el('momentumValue').textContent=`${momentum} (${momentumPct.toFixed(2)}%)`;el('volatilityValue').textContent=volatility;
+  el('supportValue').textContent=price(support);el('resistanceValue').textContent=price(resistance);
+  el('priceIndicator').textContent=price(last.close);el('maIndicator').textContent=price(ma20);el('stateIndicator').textContent=trend;
+  el('priceText').textContent=`Latest close: ${price(last.close)}`;el('candleText').textContent=`Candles: ${data.length}`;
+  el('analysisText').textContent=`Recent candles show ${trend.toLowerCase()}. Momentum is ${momentum.toLowerCase()} (${momentumPct.toFixed(2)}% across the recent comparison window), and recent volatility is ${volatility.toLowerCase()}. These calculations describe historical data only; they do not predict future prices.`;
 }
-
 
 async function loadMarketData() {
-
-    status.textContent =
-        "Loading market data...";
-
-    status.className =
-        "status";
-
-    try {
-
-        const symbol =
-            marketMap[currentMarket];
-
-        const url =
-            API_BASE_URL +
-            "/api/market-data?symbol=" +
-            encodeURIComponent(symbol) +
-            "&interval=" +
-            encodeURIComponent(currentInterval);
-
-        const response =
-            await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(
-                "Server returned " +
-                response.status
-            );
-        }
-
-        const data =
-            await response.json();
-
-        if (!Array.isArray(data.candles)) {
-            throw new Error(
-                "No candle data returned."
-            );
-        }
-
-        candles =
-            data.candles;
-
-        document.getElementById(
-            "marketName"
-        ).textContent =
-            currentMarket;
-
-        document.getElementById(
-            "chartSymbol"
-        ).textContent =
-            currentMarket;
-
-        drawChart(candles);
-
-        updateAnalysis(candles);
-
-        status.textContent =
-            "● Market data connected";
-
-        status.style.color =
-            "#8fe6a9";
-
-    } catch (error) {
-
-        console.error(error);
-
-        status.textContent =
-            "Market data unavailable";
-
-        status.style.color =
-            "#ff8d9f";
-
-        document.getElementById(
-            "analysisText"
-        ).textContent =
-            "The market-data server could not be reached. Check the Vercel deployment and API configuration.";
-    }
+  setStatus('Loading market data…');
+  el('errorDetail').textContent='';
+  el('analysisText').textContent='Retrieving the selected market data…';
+  const params=new URLSearchParams({symbol:MARKET_SYMBOLS[selectedMarket],interval:selectedInterval});
+  const url=`${API_BASE_URL}/api/market-data?${params.toString()}`;
+  try {
+    const response=await fetch(url,{method:'GET',cache:'no-store'});
+    const body=await response.text();
+    let result;
+    try { result=JSON.parse(body); } catch { throw new Error(`API returned a non-JSON response (HTTP ${response.status}).`); }
+    if(!response.ok) throw new Error(result.error || `API request failed (HTTP ${response.status}).`);
+    if(!Array.isArray(result.candles)) throw new Error('API response did not contain a candles array.');
+    const cleaned=result.candles.map(c=>({time:Number(c.time),open:Number(c.open),high:Number(c.high),low:Number(c.low),close:Number(c.close)})).filter(c=>Object.values(c).every(Number.isFinite));
+    if(!cleaned.length) throw new Error('The API returned zero valid candles.');
+    candles=cleaned;
+    drawChart(candles);updateAnalysis(candles);
+    setStatus('● Market data connected','ok');
+  } catch(error) {
+    console.error('GHOST_FX market-data request failed:',error,'URL:',url);
+    candles=[];drawChart([]);setStatus('Market data unavailable','error');
+    el('analysisText').textContent='Could not load market data. The exact error is shown below for troubleshooting.';
+    el('errorDetail').textContent=`${error.message || 'Unknown error'} — Request: ${url}`;
+    el('trendValue').textContent='—';el('momentumValue').textContent='—';el('volatilityValue').textContent='—';
+    el('supportValue').textContent='—';el('resistanceValue').textContent='—';el('priceIndicator').textContent='—';el('maIndicator').textContent='—';el('stateIndicator').textContent='—';el('priceText').textContent='Latest close: —';el('candleText').textContent='Candles: —';
+  }
 }
 
-
-marketSelect.addEventListener(
-    "change",
-    function() {
-
-        currentMarket =
-            this.value;
-
-        loadMarketData();
-    }
-);
-
-
-document.querySelectorAll(
-    ".timeframe"
-).forEach(button => {
-
-    button.addEventListener(
-        "click",
-        function() {
-
-            document.querySelectorAll(
-                ".timeframe"
-            ).forEach(btn =>
-                btn.classList.remove("active")
-            );
-
-            this.classList.add("active");
-
-            currentInterval =
-                this.dataset.interval;
-
-            loadMarketData();
-        }
-    );
-
-});
-
-
-window.addEventListener(
-    "resize",
-    function() {
-
-        if (candles.length) {
-            drawChart(candles);
-        }
-
-    }
-);
-
-
+el('marketSelect').addEventListener('change',event=>{selectedMarket=event.target.value;loadMarketData();});
+document.querySelectorAll('.tf').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));button.classList.add('active');selectedInterval=button.dataset.interval;loadMarketData();}));
+el('refreshButton').addEventListener('click',loadMarketData);
+window.addEventListener('resize',()=>drawChart(candles));
 loadMarketData();
-
-setInterval(
-    loadMarketData,
-    60000
-);
-
 </script>
-
 </body>
 </html>
