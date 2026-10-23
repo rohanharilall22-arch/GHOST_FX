@@ -23,7 +23,7 @@
 <body>
   <nav>
     <div class="logo">GHOST_FX</div>
-    <div class="navlinks"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a><a href="settings.html">Settings</a></div>
+    <div class="navlinks"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a><a href="chart-scanner.html">AI Chart Scanner</a><a href="settings.html">Settings</a></div>
   </nav>
   <main>
     <header class="heading"><h1>Market Analysis Dashboard</h1><p>Market data visualisation and educational technical analysis.</p></header>
@@ -59,7 +59,7 @@
 
 // This is the Vercel deployment whose API returned candle data in the test.
 // Keep all dashboard requests pointed at this single API base URL.
-const API_BASE_URL = 'https://ghost-fx-git-main-rohanharilall22-arch.vercel.app';
+const API_BASE_URL = '';
 const MARKET_SYMBOLS = {'XAU/USD':'XAUUSD','EUR/USD':'EURUSD','GBP/USD':'GBPUSD','USD/JPY':'USDJPY'};
 let selectedMarket = 'XAU/USD';
 let selectedInterval = '1h';
