@@ -412,3 +412,118 @@ footer {
     font-size: 27px;
   }
 }
+/* =================================
+   GHOST_FX RED & BLACK THEME
+   ================================= */
+
+:root {
+  --ghost-red: #e11d2e;
+  --ghost-red-bright: #ff3548;
+  --ghost-black: #050505;
+  --ghost-panel: #111114;
+  --ghost-border: #40171e;
+}
+
+body {
+  background: var(--ghost-black);
+  color: #f5f5f5;
+}
+
+nav {
+  background: rgba(5, 5, 5, 0.97);
+  border-bottom: 1px solid var(--ghost-border);
+}
+
+.logo span,
+.hero h1 span {
+  color: var(--ghost-red-bright);
+}
+
+.nav-button,
+.primary-button {
+  background: var(--ghost-red);
+  color: #ffffff !important;
+}
+
+.nav-button:hover,
+.primary-button:hover {
+  background: var(--ghost-red-bright);
+}
+
+.hero {
+  background: radial-gradient(
+    circle at 50% 20%,
+    #350b12 0%,
+    transparent 55%
+  );
+}
+
+.badge {
+  background: #22090e;
+  border-color: #70202d;
+  color: #ff6977;
+}
+
+.secondary-button:hover {
+  border-color: var(--ghost-red);
+}
+
+.market-card,
+.panel {
+  background: var(--ghost-panel);
+  border-color: var(--ghost-border);
+}
+
+.market-card:hover {
+  border-color: var(--ghost-red);
+}
+
+.chart {
+  background:
+    linear-gradient(#211216 1px, transparent 1px),
+    linear-gradient(90deg, #211216 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.chart-line {
+  stroke: var(--ghost-red-bright);
+}
+
+.ai-box {
+  background: #16090c;
+  border-color: #70202d;
+}
+
+.ai-icon {
+  background: var(--ghost-red);
+}
+
+.risk {
+  background: #260d12;
+  color: #ff8b98;
+}
+
+.feature-list li::before {
+  color: var(--ghost-red-bright);
+}
+
+.cta {
+  background: radial-gradient(circle, #310b12, #080808);
+  border-color: #70202d;
+}
+
+footer {
+  border-top-color: var(--ghost-border);
+  background: #050505;
+}
+
+/* Brand styling for ordinary buttons */
+button {
+  background: var(--ghost-red);
+  color: #ffffff;
+  border-color: var(--ghost-red);
+}
+
+button:hover {
+  background: var(--ghost-red-bright);
+}
