@@ -3,26 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080809">
   <title>GHOST_FX — Market Analysis</title>
   <style>
-    :root{color-scheme:dark;--bg:#080b20;--panel:#121a42;--panel2:#172451;--line:#2a3975;--text:#f5f7ff;--muted:#b3bfeb;--accent:#8b8cff;--green:#66e3a2;--red:#ff8aab;--yellow:#ffd27a}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:radial-gradient(circle at top,#243e91 0,#10183d 35%,var(--bg) 80%);min-height:100vh}
-    nav{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 4%;border-bottom:1px solid #ffffff1b;background:#080c20d9;position:sticky;top:0;z-index:3}
-    .logo{font-size:22px;font-weight:900;letter-spacing:.8px;color:#a4a6ff}
-    .navlinks{display:flex;gap:20px;flex-wrap:wrap}.navlinks a{color:#e0e5ff;text-decoration:none;font-size:14px}.navlinks a:hover{color:#fff;text-decoration:underline}
-    main{width:min(1440px,94%);margin:28px auto 40px}.heading{margin-bottom:18px}.heading h1{font-size:clamp(28px,4vw,42px);margin:0 0 7px}.heading p{color:var(--muted);margin:0}
-    .notice{padding:13px 16px;border:1px solid #8795ff60;background:#777cff1b;border-radius:12px;color:#e0e4ff;margin:18px 0 22px;font-size:13px;line-height:1.6}
-    .controls{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:18px}.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 7px;font-weight:700;letter-spacing:.6px}.field select,button{background:#101938;color:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font:inherit}.field select{min-width:155px}button{cursor:pointer}button:hover,button:focus-visible{border-color:var(--accent);outline:none}.timeframes{display:flex;gap:7px}.timeframes button.active{background:#514fc4;border-color:#9b9aff}.status{margin-left:auto;font-size:13px;color:var(--yellow);min-width:200px;text-align:right}.status.ok{color:var(--green)}.status.error{color:var(--red)}
-    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.box{background:linear-gradient(145deg,#192651f5,#101735f5);border:1px solid #ffffff17;border-radius:16px;padding:18px;box-shadow:0 14px 34px #00000020;min-width:0}.eyebrow{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700}.metric{font-size:clamp(22px,2.8vw,31px);font-weight:800;margin-top:9px;overflow-wrap:anywhere}.small{font-size:12px;color:#aab5e3;margin-top:6px;line-height:1.5}
-    .main-grid{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(270px,1fr);gap:16px;align-items:start}.chart-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.chart-title h2,.box h2{font-size:18px;margin:0}.symbol{font-weight:800;color:#b5b6ff}.chart-wrap{height:430px;width:100%;position:relative}canvas{width:100%;height:100%;display:block}.chart-footer{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:12px}.side{display:grid;gap:14px}.box p{color:#d3dbff;line-height:1.6;font-size:14px;margin:10px 0 0}.levels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.level{border-radius:10px;padding:13px;background:#0c1430}.level.support{border-left:3px solid var(--green)}.level.resistance{border-left:3px solid var(--red)}.level span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase}.level strong{display:block;margin-top:7px;font-size:19px;overflow-wrap:anywhere}.indicators{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:14px}.indicator{padding:12px 10px;background:#0c1430;border-radius:10px;min-width:0}.indicator span{display:block;color:var(--muted);font-size:10px}.indicator strong{display:block;margin-top:7px;font-size:15px;overflow-wrap:anywhere}.error-detail{color:var(--red)!important;overflow-wrap:anywhere}.footer{text-align:center;color:#8792c4;padding:30px 0 0;font-size:12px}
-    @media(max-width:900px){.main-grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-wrap{height:360px}.status{width:100%;margin-left:0;text-align:left}}
-    @media(max-width:520px){nav{align-items:flex-start;flex-direction:column}.navlinks{gap:14px}.metrics{grid-template-columns:1fr 1fr}.card,.box{padding:14px}.chart-wrap{height:300px}.levels{grid-template-columns:1fr 1fr}.indicators{grid-template-columns:1fr 1fr}}
+    :root {
+      color-scheme: dark;
+      --bg: #080809;
+      --panel: #111114;
+      --panel2: #17171b;
+      --line: #3b1b20;
+      --text: #f5f5f6;
+      --muted: #aaa8ad;
+      --accent: #e52335;
+      --accent-bright: #ff4052;
+      --green: #57d99a;
+      --red: #ff6472;
+      --yellow: #f4c96b;
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(ellipse at 50% -18%, rgba(150,18,34,.30), transparent 48%),
+        var(--bg);
+    }
+    nav {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px clamp(18px, 4vw, 56px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(7,7,8,.96);
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: .8px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .logo span { color: var(--accent-bright); }
+    .navlinks { display: flex; gap: 20px; flex-wrap: wrap; }
+    .navlinks a {
+      color: #dedee2;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color .2s ease;
+    }
+    .navlinks a:hover, .navlinks a:focus-visible { color: var(--accent-bright); }
+    main { width: min(1440px, 94%); margin: 30px auto 42px; }
+    .heading { margin-bottom: 18px; }
+    .heading h1 { font-size: clamp(28px, 4vw, 42px); margin: 0 0 7px; letter-spacing: -.7px; }
+    .heading p { color: var(--muted); margin: 0; line-height: 1.5; }
+    .notice {
+      padding: 13px 16px;
+      border: 1px solid #76232e;
+      background: rgba(111,15,28,.19);
+      border-radius: 12px;
+      color: #e8dfe1;
+      margin: 18px 0 22px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .notice strong { color: #ff7480; }
+    .controls {
+      display: flex;
+      align-items: end;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      padding: 14px;
+      background: rgba(17,17,20,.8);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .field label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin: 0 0 7px;
+      font-weight: 700;
+      letter-spacing: .8px;
+    }
+    .field select, button {
+      background: #17171b;
+      color: #fff;
+      border: 1px solid #4a252b;
+      border-radius: 9px;
+      padding: 10px 12px;
+      font: inherit;
+    }
+    .field select { min-width: 155px; }
+    button { cursor: pointer; transition: background .18s ease, border-color .18s ease, transform .18s ease; }
+    button:hover { border-color: var(--accent-bright); background: #281115; }
+    button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
+    #refreshButton { background: var(--accent); border-color: var(--accent); font-weight: 700; }
+    #refreshButton:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+    .timeframes { display: flex; gap: 7px; }
+    .timeframes button { min-width: 48px; }
+    .timeframes button.active { background: var(--accent); border-color: var(--accent-bright); color: white; }
+    .status { margin-left: auto; font-size: 13px; color: var(--yellow); min-width: 200px; text-align: right; }
+    .status.ok { color: var(--green); }
+    .status.error { color: var(--red); }
+    .metrics { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; margin-bottom: 18px; }
+    .card, .box {
+      background: linear-gradient(145deg, #17171b, #101013);
+      border: 1px solid #3a2025;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+    .card { border-top: 2px solid #6f202a; }
+    .eyebrow { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .metric { font-size: clamp(22px,2.8vw,31px); font-weight: 800; margin-top: 9px; overflow-wrap: anywhere; }
+    .small { font-size: 12px; color: #aaa6ad; margin-top: 6px; line-height: 1.5; }
+    .main-grid { display: grid; grid-template-columns: minmax(0,1.8fr) minmax(270px,1fr); gap: 16px; align-items: start; }
+    .chart-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .chart-title h2, .box h2 { font-size: 18px; margin: 0; }
+    .symbol { font-weight: 800; color: #ff7581; }
+    .chart-wrap { height: 430px; width: 100%; position: relative; }
+    canvas { width: 100%; height: 100%; display: block; }
+    .chart-footer { display: flex; gap: 12px; justify-content: space-between; flex-wrap: wrap; color: var(--muted); font-size: 12px; margin-top: 12px; }
+    .side { display: grid; gap: 14px; }
+    .box p { color: #d0cdd2; line-height: 1.6; font-size: 14px; margin: 10px 0 0; }
+    .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .level { border-radius: 10px; padding: 13px; background: #0c0c0e; border: 1px solid #292326; }
+    .level.support { border-left: 3px solid var(--green); }
+    .level.resistance { border-left: 3px solid var(--red); }
+    .level span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; }
+    .level strong { display: block; margin-top: 7px; font-size: 19px; overflow-wrap: anywhere; }
+    .indicators { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; margin-top: 14px; }
+    .indicator { padding: 12px 10px; background: #0c0c0e; border: 1px solid #292326; border-radius: 10px; min-width: 0; }
+    .indicator span { display: block; color: var(--muted); font-size: 10px; }
+    .indicator strong { display: block; margin-top: 7px; font-size: 15px; overflow-wrap: anywhere; }
+    .error-detail { color: var(--red) !important; overflow-wrap: anywhere; }
+    .footer { text-align: center; color: #858188; padding: 30px 0 0; font-size: 12px; }
+    @media(max-width:900px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .chart-wrap { height: 360px; }
+      .status { width: 100%; margin-left: 0; text-align: left; }
+    }
+    @media(max-width:520px) {
+      nav { align-items: flex-start; flex-direction: column; }
+      .navlinks { gap: 14px; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .card, .box { padding: 14px; }
+      .chart-wrap { height: 300px; }
+      .levels { grid-template-columns: 1fr 1fr; }
+      .indicators { grid-template-columns: 1fr 1fr; }
+      .controls { align-items: stretch; }
+      .field, .field select { width: 100%; }
+      .timeframes button { flex: 1; }
+      .status { min-width: 0; }
+    }
   </style>
 </head>
 <body>
   <nav>
-    <div class="logo">GHOST_FX</div>
+    <div class="logo">GHOST_<span>FX</span></div>
     <div class="navlinks"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a><a href="chart-scanner.html">AI Chart Scanner</a><a href="settings.html">Settings</a></div>
   </nav>
   <main>
@@ -56,9 +207,7 @@
   </main>
 <script>
 'use strict';
-
-// This is the Vercel deployment whose API returned candle data in the test.
-// Keep all dashboard requests pointed at this single API base URL.
+// Keep requests on the same Vercel deployment. The working market-data API is unchanged.
 const API_BASE_URL = '';
 const MARKET_SYMBOLS = {'XAU/USD':'XAUUSD','EUR/USD':'EURUSD','GBP/USD':'GBPUSD','USD/JPY':'USDJPY'};
 let selectedMarket = 'XAU/USD';
@@ -67,13 +216,11 @@ let candles = [];
 const el = id => document.getElementById(id);
 const canvas = el('marketChart');
 const ctx = canvas.getContext('2d');
-
 function priceDigits() { return selectedMarket === 'XAU/USD' ? 2 : selectedMarket === 'USD/JPY' ? 3 : 5; }
 function price(value) { return Number.isFinite(value) ? value.toFixed(priceDigits()) : '—'; }
 function average(values) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null; }
 function movingAverage(values, count) { return values.length >= count ? average(values.slice(-count)) : null; }
 function setStatus(message, state='') { el('status').textContent = message; el('status').className = `status ${state}`; }
-
 function drawChart(data) {
   const rect = canvas.getBoundingClientRect();
   if (!rect.width || !rect.height) return;
@@ -83,15 +230,15 @@ function drawChart(data) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const w = rect.width, h = rect.height;
   ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = '#0d1535'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#0b0b0e'; ctx.fillRect(0, 0, w, h);
   const pad = {l:55,r:18,t:18,b:28};
   ctx.font = '11px Arial'; ctx.lineWidth = 1;
   for(let i=0;i<=5;i++) {
     const y = pad.t + (h-pad.t-pad.b)*i/5;
-    ctx.strokeStyle = '#ffffff17'; ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke();
+    ctx.strokeStyle = '#ffffff12'; ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke();
   }
   if (!data.length) {
-    ctx.fillStyle = '#bac5f0'; ctx.textAlign = 'center'; ctx.fillText('Waiting for candle data…', w/2, h/2); return;
+    ctx.fillStyle = '#aaa8ad'; ctx.textAlign = 'center'; ctx.fillText('Waiting for candle data…', w/2, h/2); return;
   }
   const visible = data.slice(-60);
   const lows = visible.map(c=>c.low), highs = visible.map(c=>c.high);
@@ -99,19 +246,18 @@ function drawChart(data) {
   const range = (max-min) || Math.max(Math.abs(max)*0.001, 1);
   const plotH = h-pad.t-pad.b, plotW = w-pad.l-pad.r;
   const yOf = value => pad.t + (max-value)/range*plotH;
-  ctx.fillStyle='#b6c3f3'; ctx.textAlign='right'; ctx.textBaseline='middle';
+  ctx.fillStyle='#b8b5bc'; ctx.textAlign='right'; ctx.textBaseline='middle';
   for(let i=0;i<=5;i++) { const v=max-range*i/5; ctx.fillText(price(v), pad.l-8, pad.t+plotH*i/5); }
   const step = plotW/visible.length, bodyW = Math.max(2, Math.min(10, step*0.62));
   visible.forEach((c,i)=>{
-    const x=pad.l+step*(i+0.5), up=c.close>=c.open, col=up?'#58d99a':'#ff7898';
-    ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,yOf(c.high));ctx.lineTo(x,yOf(c.low));ctx.stroke();
-    const y1=yOf(c.open),y2=yOf(c.close), bh=Math.max(1.5,Math.abs(y2-y1));
-    ctx.fillStyle=col;ctx.fillRect(x-bodyW/2,Math.min(y1,y2),bodyW,bh);
+    const x=pad.l+step*(i+0.5), up=c.close>=c.open, col=up?'#55d99a':'#ff5365';
+    ctx.strokeStyle=col; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(x,yOf(c.high)); ctx.lineTo(x,yOf(c.low)); ctx.stroke();
+    const y1=yOf(c.open), y2=yOf(c.close), bh=Math.max(1.5,Math.abs(y2-y1));
+    ctx.fillStyle=col; ctx.fillRect(x-bodyW/2,Math.min(y1,y2),bodyW,bh);
   });
   const last=visible[visible.length-1];
-  ctx.strokeStyle='#b8b6ff';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(pad.l,yOf(last.close));ctx.lineTo(w-pad.r,yOf(last.close));ctx.stroke();ctx.setLineDash([]);
+  ctx.strokeStyle='#ff5365'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(pad.l,yOf(last.close)); ctx.lineTo(w-pad.r,yOf(last.close)); ctx.stroke(); ctx.setLineDash([]);
 }
-
 function updateAnalysis(data) {
   if (!data.length) throw new Error('The API returned no valid candles.');
   const closes=data.map(c=>c.close), last=data[data.length-1];
@@ -127,14 +273,13 @@ function updateAnalysis(data) {
   for(let i=1;i<recent.length;i++){const prev=recent[i-1].close;if(prev) moves.push(Math.abs((recent[i].close-prev)/prev)*100);}
   const vol=average(moves);
   const volatility=vol===null?'Not enough data':vol<0.1?'Relatively calm':vol<0.35?'Moderate':'Elevated';
-  el('marketName').textContent=selectedMarket;el('chartSymbol').textContent=selectedMarket;
-  el('trendValue').textContent=trend;el('momentumValue').textContent=`${momentum} (${momentumPct.toFixed(2)}%)`;el('volatilityValue').textContent=volatility;
-  el('supportValue').textContent=price(support);el('resistanceValue').textContent=price(resistance);
-  el('priceIndicator').textContent=price(last.close);el('maIndicator').textContent=price(ma20);el('stateIndicator').textContent=trend;
-  el('priceText').textContent=`Latest close: ${price(last.close)}`;el('candleText').textContent=`Candles: ${data.length}`;
+  el('marketName').textContent=selectedMarket; el('chartSymbol').textContent=selectedMarket;
+  el('trendValue').textContent=trend; el('momentumValue').textContent=`${momentum} (${momentumPct.toFixed(2)}%)`; el('volatilityValue').textContent=volatility;
+  el('supportValue').textContent=price(support); el('resistanceValue').textContent=price(resistance);
+  el('priceIndicator').textContent=price(last.close); el('maIndicator').textContent=price(ma20); el('stateIndicator').textContent=trend;
+  el('priceText').textContent=`Latest close: ${price(last.close)}`; el('candleText').textContent=`Candles: ${data.length}`;
   el('analysisText').textContent=`Recent candles show ${trend.toLowerCase()}. Momentum is ${momentum.toLowerCase()} (${momentumPct.toFixed(2)}% across the recent comparison window), and recent volatility is ${volatility.toLowerCase()}. These calculations describe historical data only; they do not predict future prices.`;
 }
-
 async function loadMarketData() {
   setStatus('Loading market data…');
   el('errorDetail').textContent='';
@@ -151,18 +296,17 @@ async function loadMarketData() {
     const cleaned=result.candles.map(c=>({time:Number(c.time),open:Number(c.open),high:Number(c.high),low:Number(c.low),close:Number(c.close)})).filter(c=>Object.values(c).every(Number.isFinite));
     if(!cleaned.length) throw new Error('The API returned zero valid candles.');
     candles=cleaned;
-    drawChart(candles);updateAnalysis(candles);
+    drawChart(candles); updateAnalysis(candles);
     setStatus('● Market data connected','ok');
   } catch(error) {
     console.error('GHOST_FX market-data request failed:',error,'URL:',url);
-    candles=[];drawChart([]);setStatus('Market data unavailable','error');
+    candles=[]; drawChart([]); setStatus('Market data unavailable','error');
     el('analysisText').textContent='Could not load market data. The exact error is shown below for troubleshooting.';
     el('errorDetail').textContent=`${error.message || 'Unknown error'} — Request: ${url}`;
-    el('trendValue').textContent='—';el('momentumValue').textContent='—';el('volatilityValue').textContent='—';
-    el('supportValue').textContent='—';el('resistanceValue').textContent='—';el('priceIndicator').textContent='—';el('maIndicator').textContent='—';el('stateIndicator').textContent='—';el('priceText').textContent='Latest close: —';el('candleText').textContent='Candles: —';
+    el('trendValue').textContent='—'; el('momentumValue').textContent='—'; el('volatilityValue').textContent='—';
+    el('supportValue').textContent='—'; el('resistanceValue').textContent='—'; el('priceIndicator').textContent='—'; el('maIndicator').textContent='—'; el('stateIndicator').textContent='—'; el('priceText').textContent='Latest close: —'; el('candleText').textContent='Candles: —';
   }
 }
-
 el('marketSelect').addEventListener('change',event=>{selectedMarket=event.target.value;loadMarketData();});
 document.querySelectorAll('.tf').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));button.classList.add('active');selectedInterval=button.dataset.interval;loadMarketData();}));
 el('refreshButton').addEventListener('click',loadMarketData);
